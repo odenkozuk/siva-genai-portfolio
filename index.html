@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kandula Siva Nagaraju — GenAI Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0f1e;
+      --bg2: #0f172a;
+      --bg3: #1e293b;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --accent3: #06b6d4;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --card: #111827;
+      --grad: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(99,102,241,0.15);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 1.1rem;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 2rem 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(99,102,241,0.15), transparent);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem; font-weight: 500; color: #a5b4fc;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge span { width: 8px; height: 8px; border-radius: 50%; background: #6366f1; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    h1 .grad { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted); max-width: 620px; margin: 0 auto 2rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 0.75rem 1.75rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--grad); color: #fff;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.45); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 4rem; padding-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em;
+      color: #6366f1; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .section-desc { color: var(--muted); max-width: 560px; margin-bottom: 3.5rem; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px; padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
+    .skill-category {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
+      color: #6366f1; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.78rem; color: #a5b4fc;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px; padding: 1.75rem;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--grad); opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover { border-color: rgba(99,102,241,0.35); transform: translateY(-4px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-num {
+      font-size: 0.75rem; font-weight: 700; color: #6366f1;
+      margin-bottom: 0.75rem; letter-spacing: 0.05em;
+    }
+    .project-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .project-impact {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 999px;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.75rem; font-weight: 600; color: #34d399;
+      margin-bottom: 0.85rem;
+    }
+    .project-desc { color: var(--muted); font-size: 0.88rem; flex: 1; margin-bottom: 1.25rem; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .stack-tag {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: #6366f1; font-size: 0.85rem; font-weight: 600;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 0.7rem; }
+
+    /* ── EXPERIENCE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 2px; background: linear-gradient(to bottom, #6366f1, rgba(99,102,241,0.1));
+    }
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -2.4rem; top: 8px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    }
+    .timeline-period {
+      font-size: 0.78rem; font-weight: 600; color: #6366f1;
+      margin-bottom: 0.3rem; letter-spacing: 0.05em;
+    }
+    .timeline-role { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .timeline-company { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .timeline-points { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .timeline-points li {
+      color: var(--muted); font-size: 0.88rem; padding-left: 1rem; position: relative;
+    }
+    .timeline-points li::before {
+      content: '→'; position: absolute; left: 0; color: #6366f1; font-size: 0.8rem;
+    }
+    .timeline-points strong { color: var(--text); }
+
+    /* ── CERTS ── */
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px; padding: 1.5rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cert-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
+    .cert-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .cert-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .cert-meta { color: var(--muted); font-size: 0.8rem; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      background: var(--card);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 20px; padding: 3rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .contact-wrapper::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(99,102,241,0.08), transparent);
+      pointer-events: none;
+    }
+    .contact-links {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 0.7rem 1.25rem;
+      color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.4); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem;
+      color: var(--muted); font-size: 0.82rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.8rem; }
+      section { padding: 70px 1.25rem; }
+      .hero-stats { gap: 2rem; }
+      .contact-wrapper { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Siva Nagaraju</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-badge"><span></span> Open to GenAI Opportunities</div>
+    <h1>Kandula<br><span class="grad">Siva Nagaraju</span></h1>
+    <p class="hero-sub">
+      Generative AI Developer with 3+ years at Cognizant — building RAG pipelines,
+      multi-agent systems, LangChain middleware, and Azure AI solutions at enterprise scale.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">AI Projects</div></div>
+      <div class="stat"><div class="stat-num">85%</div><div class="stat-label">Efficiency Gain</div></div>
+      <div class="stat"><div class="stat-num">100K+</div><div class="stat-label">Daily Requests</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Expertise</div>
+  <h2 class="section-title">Skills & Technologies</h2>
+  <p class="section-desc">Full-stack GenAI engineering across frameworks, cloud, and infrastructure.</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-category">Frameworks</div>
+      <div class="skill-tags">
+        <span class="tag">Neuro-SAN</span><span class="tag">LangChain</span>
+        <span class="tag">LangGraph</span><span class="tag">CrewAI</span>
+        <span class="tag">LangSmith</span><span class="tag">Arize Phoenix</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">GenAI & ML</div>
+      <div class="skill-tags">
+        <span class="tag">LLMs</span><span class="tag">RAG</span>
+        <span class="tag">Prompt Engineering</span><span class="tag">Model Fine-Tuning</span>
+        <span class="tag">Ollama</span><span class="tag">NLP</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Cloud & Infrastructure</div>
+      <div class="skill-tags">
+        <span class="tag">Azure OpenAI</span><span class="tag">Azure AI Search</span>
+        <span class="tag">AKS</span><span class="tag">Docker</span>
+        <span class="tag">Kubernetes</span><span class="tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Databases & Vector Stores</div>
+      <div class="skill-tags">
+        <span class="tag">Pinecone</span><span class="tag">Weaviate</span>
+        <span class="tag">FAISS</span><span class="tag">Redis</span>
+        <span class="tag">Azure SQL</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Programming</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">.NET</span><span class="tag">HTML</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">AI/ML Ops</div>
+      <div class="skill-tags">
+        <span class="tag">LLMOps</span><span class="tag">Tracing</span>
+        <span class="tag">Observability</span><span class="tag">Computer Vision</span>
+        <span class="tag">Facial Recognition</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Portfolio</div>
+  <h2 class="section-title">Projects</h2>
+  <p class="section-desc">Enterprise GenAI solutions built and deployed at Cognizant.</p>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <div class="project-title">RAG Chatbot — Azure AI Search</div>
+      <div class="project-impact">↓ 20% L0 Ticket Volume</div>
+      <p class="project-desc">Retrieval-Augmented Generation chatbot using Azure AI Search for semantic vector retrieval and GPT-4o for grounded answer generation over enterprise knowledge bases.</p>
+      <div class="project-stack">
+        <span class="stack-tag">LangChain</span><span class="stack-tag">Azure AI Search</span>
+        <span class="stack-tag">Azure OpenAI</span><span class="stack-tag">Python</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/01_rag_chatbot_azure" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <div class="project-title">NeuroSAN Multi-Agent Orchestration</div>
+      <div class="project-impact">↑ 85% Efficiency & Accuracy</div>
+      <p class="project-desc">Main Orchestrator Agent coordinating 7 specialized sub-agents (ServiceNow, CAB, SEAT, FAQ) via Neuro-SAN's HOCON-configured multi-agent architecture.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Neuro-SAN</span><span class="stack-tag">Azure OpenAI</span>
+        <span class="stack-tag">HOCON</span><span class="stack-tag">ServiceNow API</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/02_neurosan_multi_agent_orchestration" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-title">LangChain Middleware Pipelines</div>
+      <div class="project-impact">Controlled AI Workflows</div>
+      <p class="project-desc">Enterprise middleware with map-reduce summarization chains, Human-in-the-Loop approval checkpoints via LangGraph, and full audit callback logging.</p>
+      <div class="project-stack">
+        <span class="stack-tag">LangChain</span><span class="stack-tag">LangGraph</span>
+        <span class="stack-tag">Azure OpenAI</span><span class="stack-tag">LangSmith</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/03_langchain_middleware_pipelines" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">04</div>
+      <div class="project-title">Observability & Feedback Evaluation</div>
+      <div class="project-impact">↑ 10% Response Accuracy</div>
+      <p class="project-desc">LLM-as-judge hallucination detection with batch evaluation, accuracy metrics aggregation, and LangSmith feedback logging for continuous improvement.</p>
+      <div class="project-stack">
+        <span class="stack-tag">LangSmith</span><span class="stack-tag">Arize Phoenix</span>
+        <span class="stack-tag">Azure OpenAI</span><span class="stack-tag">OpenTelemetry</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/04_observability_feedback_system" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">05</div>
+      <div class="project-title">LLM Fine-Tuning — Mistral & LLaMA-3</div>
+      <div class="project-impact">Domain-Adapted Enterprise LLMs</div>
+      <p class="project-desc">QLoRA fine-tuning of Mistral-7B and LLaMA-3-8B for enterprise RAG use cases using 4-bit NF4 quantization and LoRA adapters on 16GB VRAM.</p>
+      <div class="project-stack">
+        <span class="stack-tag">PEFT</span><span class="stack-tag">TRL</span>
+        <span class="stack-tag">bitsandbytes</span><span class="stack-tag">Transformers</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/05_llm_finetuning_mistral_llama" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">06</div>
+      <div class="project-title">AI Microservices on AKS</div>
+      <div class="project-impact">100K+ Daily Requests</div>
+      <p class="project-desc">Containerized FastAPI microservice on Azure Kubernetes Service with Horizontal Pod Autoscaling (3–20 replicas) and Azure Queue event-driven processing.</p>
+      <div class="project-stack">
+        <span class="stack-tag">FastAPI</span><span class="stack-tag">Docker</span>
+        <span class="stack-tag">AKS</span><span class="stack-tag">Azure Queue</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/06_aks_microservices_azure" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">07</div>
+      <div class="project-title">Revenue Data Extraction Pipeline</div>
+      <div class="project-impact">↓ 60% Manual Effort</div>
+      <p class="project-desc">End-to-end pipeline extracting 20+ structured revenue fields from PDFs using PyMuPDF for parsing and a two-stage LangChain extract→validate chain with Azure OpenAI.</p>
+      <div class="project-stack">
+        <span class="stack-tag">PyMuPDF</span><span class="stack-tag">LangChain</span>
+        <span class="stack-tag">Azure OpenAI</span><span class="stack-tag">Pydantic</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/07_revenue_data_extraction" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">08</div>
+      <div class="project-title">ID Card Photo Validation</div>
+      <div class="project-impact">↓ ~70% Manual Review Effort</div>
+      <p class="project-desc">Automated employee ID photo compliance checker validating background, dimensions, face orientation, and blur using Azure Face API and Computer Vision API.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Azure Face API</span><span class="stack-tag">Computer Vision</span>
+        <span class="stack-tag">Pillow</span><span class="stack-tag">Python</span>
+      </div>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio/tree/main/08_id_card_photo_validation" target="_blank" class="project-link">View Code →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Experience</h2>
+  <p class="section-desc">3+ years building production GenAI systems at Cognizant Technology Solutions.</p>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-period">JUL 2025 — PRESENT</div>
+      <div class="timeline-role">Associate Developer</div>
+      <div class="timeline-company">Cognizant Technology Solutions, Bengaluru</div>
+      <ul class="timeline-points">
+        <li>Built RAG chatbot using Azure AI Search & OpenAI, reducing L0 ticket volume by <strong>20%</strong></li>
+        <li>Architected NeuroSAN Multi-Agent Framework with <strong>85%</strong> efficiency gain coordinating 7 sub-agents</li>
+        <li>Engineered LangChain middleware pipelines with summarization chains and HITL checkpoints</li>
+        <li>Built Observability & Feedback Evaluation System improving accuracy by <strong>10%</strong></li>
+        <li>Deployed scalable microservices on AKS handling <strong>100K+</strong> daily requests</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">DEC 2023 — JUL 2025</div>
+      <div class="timeline-role">Programmer Analyst</div>
+      <div class="timeline-company">Cognizant Technology Solutions, Bengaluru</div>
+      <ul class="timeline-points">
+        <li>Automated extraction of revenue & contract data using Azure Form Recognizer, reducing manual effort by <strong>60%</strong></li>
+        <li>Leveraged LangChain to filter and retrieve contextually relevant content from extracted documents</li>
+        <li>Integrated Azure OpenAI with blob storage pipelines to generate structured responses</li>
+        <li>Fine-tuned Mistral, LLaMA, and LoRA-based models for enterprise RAG use cases</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">DEC 2022 — DEC 2023</div>
+      <div class="timeline-role">Programmer Analyst Trainee</div>
+      <div class="timeline-company">Cognizant Technology Solutions, Bengaluru</div>
+      <ul class="timeline-points">
+        <li>Automated ID card photo validation using Azure Vision API & Face API, reducing manual effort by <strong>~70%</strong></li>
+        <li>Designed pipeline to auto-flag non-compliant photos and streamline employee onboarding</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">JUN 2022 — DEC 2022</div>
+      <div class="timeline-role">Intern</div>
+      <div class="timeline-company">Cognizant Technology Solutions, Bengaluru</div>
+      <ul class="timeline-points">
+        <li>6-month internship in Python, SQL, Azure, and Informatica</li>
+        <li>Built foundation in data engineering and cloud services</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs" style="padding-top: 0;">
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title">Certifications</h2>
+  <p class="section-desc">Certified by Anthropic in cutting-edge AI tooling and workflows.</p>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-icon">🤖</div>
+      <div>
+        <div class="cert-name">Introduction to Model Context Protocol</div>
+        <div class="cert-meta">Anthropic &nbsp;·&nbsp; Mar 10, 2026 &nbsp;·&nbsp; eoojdiu82ue3</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">⚡</div>
+      <div>
+        <div class="cert-name">Claude Code in Action</div>
+        <div class="cert-meta">Anthropic &nbsp;·&nbsp; Mar 3, 2026 &nbsp;·&nbsp; 4ooovgzb53q5</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Let's Connect</h2>
+    <p style="color: var(--muted); max-width: 480px; margin: 0 auto;">
+      Open to GenAI Engineer roles, freelance projects, and collaborations.
+      Reach out via email or GitHub.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:kandulasiva4571@gmail.com" class="contact-link">
+        📧 kandulasiva4571@gmail.com
+      </a>
+      <a href="https://github.com/odenkozuk/siva-genai-portfolio" target="_blank" class="contact-link">
+        💻 GitHub Portfolio
+      </a>
+      <a href="tel:+917207589607" class="contact-link">
+        📞 +91 7207589607
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built by Kandula Siva Nagaraju &nbsp;·&nbsp; Generative AI Developer &nbsp;·&nbsp; 2026</p>
+</footer>
+
+</body>
+</html>
