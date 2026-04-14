@@ -1,0 +1,11 @@
+# Neuro-SAN Multi-Agent Orchestration Manifest
+# Registers all agents for the service orchestration framework
+
+{
+    "manifest": {
+        "orchestrator": "registries/orchestrator.hocon"
+        "servicenow_agent": "registries/servicenow_agent.hocon"
+        "cab_agent": "registries/cab_agent.hocon"
+        "faq_agent": "registries/faq_agent.hocon"
+    }
+}

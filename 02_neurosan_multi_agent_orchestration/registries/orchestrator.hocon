@@ -1,0 +1,93 @@
+# Main Orchestrator Agent — coordinates 7 specialized sub-agents
+# (ServiceNow, CAB, SEAT, FAQ, Approval, Analytics, Notification)
+
+{
+    "llm_config": {
+        "model_name": "azure/gpt-4o"
+    }
+
+    "agents": {
+        "orchestrator": {
+            "description": "Main orchestrator that receives user requests and delegates to specialized sub-agents."
+            "instructions": """You are the main orchestration agent. Analyze the user request and route it
+to the correct specialized agent:
+- ServiceNow incidents/tickets → use servicenow_tool
+- Change Advisory Board approvals → use cab_tool
+- Seat/asset requests → use seat_tool
+- General FAQ questions → use faq_tool
+- Approval workflows → use approval_tool
+- Analytics/reporting → use analytics_tool
+- Notifications → use notification_tool
+
+Always synthesize responses from sub-agents into a clear, actionable summary."""
+            "tools": ["servicenow_tool", "cab_tool", "faq_tool", "seat_tool"]
+        }
+    }
+
+    "tools": {
+        "servicenow_tool": {
+            "function": {
+                "description": "Create, update, or query ServiceNow incidents and service requests."
+                "parameters": {
+                    "type": "object"
+                    "properties": {
+                        "action": {"type": "string", "enum": ["create", "update", "query"]}
+                        "ticket_number": {"type": "string"}
+                        "description": {"type": "string"}
+                        "priority": {"type": "string", "enum": ["1", "2", "3", "4"]}
+                    }
+                    "required": ["action"]
+                }
+            }
+            "class": "coded_tools.servicenow_tool.ServiceNowTool"
+        }
+
+        "cab_tool": {
+            "function": {
+                "description": "Submit and track Change Advisory Board (CAB) change requests."
+                "parameters": {
+                    "type": "object"
+                    "properties": {
+                        "change_type": {"type": "string", "enum": ["standard", "normal", "emergency"]}
+                        "description": {"type": "string"}
+                        "risk_level": {"type": "string", "enum": ["low", "medium", "high"]}
+                        "implementation_date": {"type": "string"}
+                    }
+                    "required": ["change_type", "description"]
+                }
+            }
+            "class": "coded_tools.cab_tool.CABTool"
+        }
+
+        "faq_tool": {
+            "function": {
+                "description": "Answer frequently asked questions from the knowledge base."
+                "parameters": {
+                    "type": "object"
+                    "properties": {
+                        "question": {"type": "string"}
+                        "category": {"type": "string"}
+                    }
+                    "required": ["question"]
+                }
+            }
+            "class": "coded_tools.faq_tool.FAQTool"
+        }
+
+        "seat_tool": {
+            "function": {
+                "description": "Manage seat/asset allocation and employee seating requests."
+                "parameters": {
+                    "type": "object"
+                    "properties": {
+                        "action": {"type": "string", "enum": ["allocate", "release", "query"]}
+                        "employee_id": {"type": "string"}
+                        "location": {"type": "string"}
+                    }
+                    "required": ["action", "employee_id"]
+                }
+            }
+            "class": "coded_tools.seat_tool.SEATTool"
+        }
+    }
+}
