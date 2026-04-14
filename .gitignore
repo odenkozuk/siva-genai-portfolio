@@ -1,3 +1,4 @@
+# Python
 .env
 __pycache__/
 *.py[cod]
@@ -8,8 +9,27 @@ env/
 *.egg-info/
 dist/
 build/
-.DS_Store
-Thumbs.db
 *.log
 outputs/
 .claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Visual Studio
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+.vs/
+*.ilk
+*.pdb
+*.tmp
+node_modules/
