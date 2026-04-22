@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technical Glossary — Kandula Siva Nagaraju</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080a0f;
+  --bg2: #0f1118;
+  --bg3: #161923;
+  --bg4: #1e2230;
+  --border: #252936;
+  --border2: #2e3345;
+  --accent: #3bffa0;
+  --accent2: #7b8cff;
+  --accent3: #ff6b8a;
+  --accent4: #ffb347;
+  --accent5: #54d4ff;
+  --text: #e2e5f0;
+  --text2: #8990ac;
+  --text3: #4a5068;
+  --glow: rgba(59,255,160,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ─── HEADER ─── */
+.site-header{
+  background:rgba(8,10,15,0.95);
+  border-bottom:1px solid var(--border);
+  padding:18px 28px;
+  position:sticky;top:0;z-index:200;
+  backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.brand h1{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.3px}
+.brand h1 span{color:var(--accent)}
+.brand p{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px}
+.search-wrap{flex:1;max-width:360px;position:relative}
+.search-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;
+  padding:9px 14px 9px 36px;border-radius:8px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(59,255,160,0.1)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px}
+.search-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap}
+
+/* ─── LAYOUT ─── */
+.layout{display:flex;min-height:calc(100vh - 62px)}
+
+/* ─── SIDEBAR ─── */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  padding:20px 0;
+  position:sticky;top:62px;height:calc(100vh - 62px);
+  overflow-y:auto;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sidebar-section{padding:0 16px;margin-bottom:8px}
+.sidebar-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;
+  padding:8px 4px 6px;border-bottom:1px solid var(--border);margin-bottom:6px;
+}
+.cat-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:7px 8px;border-radius:6px;
+  background:transparent;border:none;
+  color:var(--text2);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;
+  cursor:pointer;transition:all 0.15s;text-align:left;
+}
+.cat-btn:hover{background:var(--bg3);color:var(--text)}
+.cat-btn.active{background:rgba(59,255,160,0.08);color:var(--accent)}
+.cat-btn .cat-count{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  background:var(--bg4);padding:1px 6px;border-radius:3px;color:var(--text3);
+}
+.cat-btn.active .cat-count{background:rgba(59,255,160,0.15);color:var(--accent)}
+
+/* ─── MAIN ─── */
+.main{flex:1;padding:24px 28px 80px;overflow-y:auto}
+.section-header{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;margin-top:8px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;
+  text-transform:uppercase;letter-spacing:2px;color:var(--text3);
+}
+.section-line{flex:1;height:1px;background:var(--border)}
+
+/* ─── CARDS ─── */
+.cards-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;
+  transition:border-color 0.2s,transform 0.15s;
+  animation:fadeIn 0.25s ease both;
+}
+.card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.card.open{border-color:var(--border2)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card-head{
+  padding:14px 18px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  user-select:none;
+}
+.card-emoji{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.card-title-wrap{flex:1}
+.card-title{font-size:14px;font-weight:700;color:var(--text)}
+.card-tagline{font-size:11px;color:var(--text3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.card-right{display:flex;align-items:center;gap:8px}
+.card-tag{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;
+}
+.tag-core{background:rgba(59,255,160,0.08);color:var(--accent);border:1px solid rgba(59,255,160,0.2)}
+.tag-model{background:rgba(123,140,255,0.08);color:var(--accent2);border:1px solid rgba(123,140,255,0.2)}
+.tag-rag{background:rgba(84,212,255,0.08);color:var(--accent5);border:1px solid rgba(84,212,255,0.2)}
+.tag-framework{background:rgba(255,179,71,0.08);color:var(--accent4);border:1px solid rgba(255,179,71,0.2)}
+.tag-agent{background:rgba(255,107,138,0.08);color:var(--accent3);border:1px solid rgba(255,107,138,0.2)}
+.tag-azure{background:rgba(0,120,212,0.1);color:#5ba3f5;border:1px solid rgba(0,120,212,0.25)}
+.tag-ops{background:rgba(255,179,71,0.08);color:var(--accent4);border:1px solid rgba(255,179,71,0.2)}
+.tag-infra{background:rgba(150,150,150,0.08);color:#9aa;border:1px solid rgba(150,150,150,0.2)}
+.chevron{color:var(--text3);font-size:14px;transition:transform 0.25s;flex-shrink:0}
+.card.open .chevron{transform:rotate(180deg)}
+
+.card-body{
+  display:none;padding:0 18px 20px;
+  border-top:1px solid var(--border);
+}
+.card.open .card-body{display:block}
+
+/* Body sections */
+.body-block{margin-top:16px}
+.body-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.body-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.body-text{font-size:13px;line-height:1.8;color:#bcc2d8}
+.body-text strong{color:var(--accent);font-weight:700}
+.body-text em{color:var(--accent2);font-style:normal}
+.body-text b{color:var(--text);font-weight:600}
+
+/* Chain */
+.chain-wrap{
+  display:flex;align-items:center;gap:0;flex-wrap:wrap;
+  margin-top:8px;gap:4px;
+}
+.chain-item{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--bg3);border:1px solid var(--border2);
+  padding:4px 10px;border-radius:4px;color:var(--text2);
+  cursor:pointer;transition:all 0.15s;
+}
+.chain-item:hover{border-color:var(--accent2);color:var(--accent2)}
+.chain-item.current{background:rgba(59,255,160,0.08);border-color:var(--accent);color:var(--accent)}
+.chain-arrow{color:var(--text3);font-size:12px;padding:0 2px}
+
+/* Code block */
+.code-block{
+  background:var(--bg);border:1px solid var(--border);
+  border-left:3px solid var(--accent2);
+  border-radius:0 6px 6px 0;
+  padding:12px 14px;margin-top:8px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#a8b0cc;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;
+}
+.code-block .kw{color:var(--accent2)}
+.code-block .str{color:var(--accent)}
+.code-block .cm{color:var(--text3)}
+
+/* Example badge */
+.example-box{
+  background:rgba(59,255,160,0.04);
+  border:1px solid rgba(59,255,160,0.15);
+  border-radius:6px;padding:10px 14px;margin-top:8px;
+  font-size:12px;color:#a8c8b8;line-height:1.7;
+}
+.example-box .ex-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--accent);font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:6px;
+}
+
+/* Models pills */
+.models-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.model-pill{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  background:var(--bg3);border:1px solid var(--border2);
+  padding:3px 10px;border-radius:4px;color:var(--text2);
+}
+
+/* Usecase list */
+.usecase-list{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.usecase-list li{
+  font-size:12px;color:#9499b5;
+  padding-left:16px;position:relative;line-height:1.6;
+}
+.usecase-list li::before{content:'→';position:absolute;left:0;color:var(--accent2);font-weight:700}
+
+/* Key point */
+.keypoint{
+  margin-top:12px;
+  background:rgba(123,140,255,0.06);
+  border:1px solid rgba(123,140,255,0.2);
+  border-radius:6px;padding:10px 14px;
+  font-size:12px;color:#9ca4cc;line-height:1.7;
+  display:flex;gap:8px;
+}
+.keypoint::before{content:"⚡";font-size:13px;flex-shrink:0}
+
+/* No results */
+.no-results{
+  text-align:center;padding:60px 20px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--text3);display:none;
+}
+
+/* Stats bar */
+.stats-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:8px 28px;display:flex;align-items:center;gap:24px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);
+  z-index:100;
+}
+.stats-bar .stat span{color:var(--accent);font-weight:700}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{padding:16px;padding-bottom:60px}
+  .site-header{padding:12px 16px}
+  .search-wrap{max-width:100%;min-width:0;flex:1}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <div>
+      <h1>Tech <span>Glossary</span></h1>
+      <p>Kandula Siva Nagaraju · GenAI Developer</p>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" id="searchInput" placeholder="Search LLM, RAG, LoRA, BERT..." autocomplete="off">
+  </div>
+  <div class="search-count" id="searchCount">52 terms</div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categories</div>
+      <button class="cat-btn active" data-cat="all">All Terms <span class="cat-count" id="cnt-all">52</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">AI Fundamentals</div>
+      <button class="cat-btn" data-cat="core">Core AI/ML <span class="cat-count">7</span></button>
+      <button class="cat-btn" data-cat="model">Models <span class="cat-count">6</span></button>
+      <button class="cat-btn" data-cat="finetune">Fine-tuning <span class="cat-count">3</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Retrieval</div>
+      <button class="cat-btn" data-cat="rag">RAG & Search <span class="cat-count">6</span></button>
+      <button class="cat-btn" data-cat="vecdb">Vector DBs <span class="cat-count">4</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Frameworks</div>
+      <button class="cat-btn" data-cat="framework">LangChain Stack <span class="cat-count">4</span></button>
+      <button class="cat-btn" data-cat="agent">Multi-Agent <span class="cat-count">6</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Cloud & Ops</div>
+      <button class="cat-btn" data-cat="azure">Azure Services <span class="cat-count">7</span></button>
+      <button class="cat-btn" data-cat="ops">LLMOps <span class="cat-count">4</span></button>
+      <button class="cat-btn" data-cat="infra">Infrastructure <span class="cat-count">5</span></button>
+    </div>
+  </aside>
+
+  <main class="main" id="mainContent"></main>
+</div>
+
+<div class="no-results" id="noResults">No terms found. Try a different search.</div>
+
+<div class="stats-bar">
+  <div class="stat">Showing <span id="visibleCount">52</span> terms</div>
+  <div class="stat">Categories: <span>10</span></div>
+  <div class="stat">From resume of <span>Kandula Siva Nagaraju</span></div>
+</div>
+
+<script>
+const TERMS = [
+
+// ─── CORE AI/ML ───────────────────────────────────────────────
+{
+  id:"llm", cat:"core", emoji:"🧠", tag:"core", tagLabel:"Core AI",
+  term:"LLM — Large Language Model",
+  tagline:"The brain: predicts next token given context",
+  chain:["LLM","Transformer","Attention Mechanism","Encoder-Decoder","Embeddings"],
+  what:`An LLM is a neural network trained on massive text data to <strong>predict the next token</strong> (word/subword) in a sequence. By learning to do this billions of times, it implicitly learns grammar, facts, reasoning, and code.`,
+  how:`<b>Training:</b> Feed billions of tokens. At each step, model predicts next token → compare to actual → compute loss → backpropagate → update weights. Repeat for months on thousands of GPUs.<br><br>
+<b>Inference:</b> Given a prompt, the model generates tokens one at a time (autoregressive) until it hits a stop token or max length.<br><br>
+<b>Key params:</b> Parameters = weights in the network. GPT-3 has 175B params, GPT-4 estimated ~1.8T. More params ≠ always better — architecture and training data quality matter.`,
+  example:`At Cognizant, you used Azure OpenAI's GPT-4 as the LLM brain inside your RAG chatbot and multi-agent orchestrator. The LLM reasons over retrieved context and decides which sub-agent to call.`,
+  models:["GPT-4","GPT-3.5","Mistral-7B","LLaMA-3","Claude 3","Gemini","Phi-3"],
+  usecases:["RAG chatbots","Code generation","Summarization","Classification","Multi-agent reasoning"],
+  keypoint:"LLMs don't 'know' things — they predict what token is statistically likely next. RAG is how you give them actual knowledge."
+},
+{
+  id:"transformer", cat:"core", emoji:"⚙️", tag:"core", tagLabel:"Core AI",
+  term:"Transformer Architecture",
+  tagline:"The architecture all modern LLMs are built on",
+  chain:["LLM","Transformer","Attention Mechanism","Encoder-Decoder","Embeddings"],
+  what:`Transformer is the neural network architecture introduced in <em>'Attention Is All You Need' (2017, Google)</em>. All modern LLMs (GPT, BERT, LLaMA, Mistral) are built on it. It replaced RNNs/LSTMs by processing all tokens <strong>in parallel</strong> instead of sequentially.`,
+  how:`<b>Core components:</b><br>
+1. <strong>Token Embedding</strong> — Convert words → vectors<br>
+2. <strong>Positional Encoding</strong> — Add position info (order matters)<br>
+3. <strong>Multi-Head Attention</strong> — Each token attends to all others<br>
+4. <strong>Feed-Forward Network</strong> — Per-token transformation<br>
+5. <strong>Layer Norm + Residual</strong> — Stabilize training<br><br>
+<b>Stack N of these blocks</b> = deeper reasoning. GPT-3 = 96 layers deep.`,
+  codeblock:`Input: "The cat sat"
+↓ Tokenize → [The=1024, cat=2731, sat=5892]
+↓ Embed  → [[0.2,-0.4,...], [0.7,0.1,...], [-0.3,0.9,...]]
+↓ + Pos  → add position vectors
+↓ Attn   → each token weighs all others
+↓ FFN    → transform each token
+↓ Output → logits over vocabulary`,
+  example:`Every model you use — GPT-4, Mistral, LLaMA, BERT — is a Transformer. When your LangChain SummarizationChain calls Azure OpenAI, it's calling a 96+ layer Transformer stack.`,
+  models:["All modern LLMs","GPT family","BERT family","LLaMA","Mistral","T5"],
+  usecases:["Foundation of all LLMs","NLP tasks","Code generation","Vision transformers (ViT)"],
+  keypoint:"Transformer = parallel processing of all tokens via attention. This is why it's faster and more powerful than LSTM/RNN for long sequences."
+},
+{
+  id:"attention", cat:"core", emoji:"👁️", tag:"core", tagLabel:"Core AI",
+  term:"Attention Mechanism",
+  tagline:"How the model decides what to focus on",
+  chain:["LLM","Transformer","Attention Mechanism","Encoder-Decoder","Embeddings"],
+  what:`Attention lets each token in a sequence <strong>look at all other tokens and decide how much to focus on each one</strong>. It's the key innovation that made Transformers powerful.`,
+  how:`<b>Scaled Dot-Product Attention:</b><br>
+For each token, compute 3 vectors from its embedding:<br>
+— <strong>Q (Query)</strong>: "what am I looking for?"<br>
+— <strong>K (Key)</strong>: "what do I contain?"<br>
+— <strong>V (Value)</strong>: "what do I contribute?"<br><br>
+Score = softmax(Q · Kᵀ / √d) · V<br><br>
+<b>Multi-Head Attention:</b> Run H parallel attention heads. Each head learns different relationships (syntax, semantics, coreference). Concat outputs → linear projection.`,
+  codeblock:`Example: "The animal didn't cross the street because it was tired"
+
+When processing "it":
+ → Q("it") attends to K("animal") = HIGH score 0.87
+ → Q("it") attends to K("street") = low score 0.05
+ → Q("it") attends to K("tired") = medium 0.41
+
+Result: model knows "it" refers to "animal", not "street"`,
+  example:`In your RAG chatbot, when GPT-4 reads retrieved chunks + user query, attention is how it decides which parts of the context are relevant to the answer.`,
+  models:["All Transformers","Flash Attention (efficiency optimization)","Sparse Attention (GPT-3)"],
+  usecases:["Token relationship modeling","Context understanding","Coreference resolution","Long-range dependencies"],
+  keypoint:"Attention score = relevance between tokens. High score = 'pay attention here'. This is how LLMs understand context."
+},
+{
+  id:"encoder_decoder", cat:"core", emoji:"🔄", tag:"core", tagLabel:"Core AI",
+  term:"Encoder-Decoder Architecture",
+  tagline:"Encoder reads, Decoder writes — used in seq2seq tasks",
+  chain:["LLM","Transformer","Attention Mechanism","Encoder-Decoder","Embeddings"],
+  what:`Two variants of Transformer architecture optimized for different tasks:<br>
+<strong>Encoder-only</strong> (BERT): reads and understands text → great for classification, NER, embeddings.<br>
+<strong>Decoder-only</strong> (GPT): generates text left-to-right → great for generation, chat.<br>
+<strong>Encoder-Decoder</strong> (T5, BART): encoder reads input, decoder generates output → great for translation, summarization.`,
+  how:`<b>Encoder (BERT-style):</b><br>
+— Uses <em>bidirectional</em> attention: each token sees ALL other tokens in both directions<br>
+— Output: rich contextual embedding of each token<br>
+— Use: Classification<br><br>
+<b>Decoder (GPT-style):</b><br>
+— Uses <em>causal/masked</em> attention: each token only sees PAST tokens<br>
+— Output: next token probabilities<br>
+— Use: Generation (your Azure OpenAI chatbot responses)`,
+  example:`Your NLP IT Service Desk (BERT + RoBERTa) uses encoder-only architecture for ticket classification. Your Azure OpenAI RAG chatbot uses decoder-only (GPT) for response generation.`,
+  models:["Encoder: BERT, RoBERTa, DistilBERT","Decoder: GPT-4, LLaMA, Mistral","Enc-Dec: T5, BART, mT5"],
+  usecases:["Encoder: classification, NER, embeddings","Decoder: chat, code, completion","Enc-Dec: translation, summarization"],
+  keypoint:"Encoder = understand (bidirectional). Decoder = generate (left-to-right). GPT is decoder-only. BERT is encoder-only."
+},
+{
+  id:"embeddings", cat:"core", emoji:"📐", tag:"core", tagLabel:"Core AI",
+  term:"Embeddings",
+  tagline:"Converting text into numbers (vectors) that capture meaning",
+  chain:["LLM","Transformer","Attention Mechanism","Encoder-Decoder","Embeddings"],
+  what:`An embedding is a <strong>dense vector of floating point numbers</strong> that represents the semantic meaning of text. Similar meanings → vectors are close in high-dimensional space.`,
+  how:`<b>Word2Vec</b>: train on "context predicts word" — "king - man + woman ≈ queen"<br><br>
+<b>Sentence embeddings (OpenAI text-embedding-ada-002)</b>:<br>
+→ Pass text through encoder Transformer<br>
+→ Pool the final layer hidden states<br>
+→ Output: 1536-dimensional vector<br><br>
+<b>Cosine similarity</b>: measure angle between vectors<br>
+→ 1.0 = identical meaning, 0 = unrelated, -1 = opposite`,
+  codeblock:`"Azure OpenAI" → [0.23, -0.71, 0.44, ..., 0.12]  (1536 dims)
+"Microsoft cloud AI" → [0.21, -0.69, 0.41, ..., 0.14]
+cosine_similarity = 0.97  ✓ semantically close
+
+"cat food"  → [-0.45, 0.88, -0.33, ..., 0.66]
+cosine_similarity with above = 0.12  ✗ unrelated`,
+  example:`In your RAG chatbot, user query gets embedded → compared to Azure AI Search index of embedded KB articles → top-k most similar chunks retrieved → fed to GPT-4.`,
+  models:["OpenAI text-embedding-ada-002","OpenAI text-embedding-3-small/large","BERT sentence embeddings","E5, BGE, Instructor"],
+  usecases:["Vector search in RAG","Semantic similarity","Clustering documents","Anomaly detection"],
+  keypoint:"Embeddings are how machines understand meaning. Close vectors = similar meaning. This is the foundation of all semantic search."
+},
+{
+  id:"nlp", cat:"core", emoji:"📝", tag:"core", tagLabel:"Core AI",
+  term:"NLP — Natural Language Processing",
+  tagline:"Teaching machines to understand and generate human language",
+  chain:["NLP","Tokenization","Embeddings","Transformer"],
+  what:`NLP is the field covering all tasks involving human language. Classic NLP used rules + statistics. Modern NLP uses Transformers for almost everything.`,
+  how:`<b>Core NLP tasks:</b><br>
+— <em>Tokenization</em>: split text into subword tokens<br>
+— <em>Classification</em>: assign label (your IT ticket routing)<br>
+— <em>NER</em>: extract entities (names, dates, org names)<br>
+— <em>Summarization</em>: condense long text (your LangChain chains)<br>
+— <em>QA</em>: answer questions from context (your RAG chatbot)`,
+  example:`Your IT Service Desk Automation uses BERT + RoBERTa for NLP-based ticket classification. Your Contract Intelligence Platform uses NLP to extract clauses, obligations, and dates.`,
+  models:["BERT","RoBERTa","spaCy","NLTK","GPT-4","T5"],
+  usecases:["Ticket classification","Entity extraction","Document understanding","Sentiment analysis","Intent detection"],
+  keypoint:"NLP is the problem space. Transformers are the current solution. Your BERT classification work = applied NLP."
+},
+{
+  id:"tokenization", cat:"core", emoji:"✂️", tag:"core", tagLabel:"Core AI",
+  term:"Tokenization",
+  tagline:"Breaking text into the units the model actually processes",
+  chain:["Text","Tokenization","Token IDs","Embeddings","Transformer"],
+  what:`Tokenization splits raw text into <strong>tokens</strong> — the atomic units an LLM processes. Tokens are not always whole words. GPT-4 uses ~100K vocab of subword tokens.`,
+  how:`<b>BPE (Byte Pair Encoding)</b> — used by GPT series:<br>
+Merge the most frequent character pairs repeatedly.<br><br>
+<b>Rule of thumb</b>: 1 token ≈ ¾ English word. 100 tokens ≈ 75 words.<br>Context window (e.g., 128K tokens) = how much text fits in one prompt.`,
+  codeblock:`"Hello, world!" → [15496, 11, 995, 0]   (GPT tokenizer)
+"Azure OpenAI"  → [35, 482, 7946, 32, 40, 1537]
+"aaosa"         → ["aa", "osa"]  (rare term = split)`,
+  example:`Context window management in your NeuroSAN system — sub-agents stay within token budgets to avoid overflow.`,
+  models:["tiktoken (OpenAI)","SentencePiece (Google)","HuggingFace Tokenizers"],
+  usecases:["All LLM input processing","Context window management","Cost estimation (tokens = billing unit for Azure OpenAI)"],
+  keypoint:"Tokens = billing unit + context window unit. 4K context ≠ 4K words. Know your token counts to avoid surprises."
+},
+
+// ─── MODELS ───────────────────────────────────────────────────
+{
+  id:"gpt4", cat:"model", emoji:"🤖", tag:"model", tagLabel:"Model",
+  term:"GPT-4 / Azure OpenAI",
+  tagline:"OpenAI's flagship decoder-only LLM, accessed via Azure",
+  chain:["GPT-4","Transformer","Decoder-Only","RLHF","Azure OpenAI"],
+  what:`GPT-4 is OpenAI's most capable model. <em>GPT = Generative Pre-trained Transformer</em>. Accessed in enterprise via <strong>Azure OpenAI Service</strong> — same model, Microsoft's cloud, compliance and data residency guarantees.`,
+  how:`<b>Architecture:</b> Decoder-only Transformer (estimated ~1.8T params, MoE architecture)<br><br>
+<b>Training:</b><br>
+1. <em>Pretraining</em>: predict next token on internet-scale text<br>
+2. <em>SFT</em>: human demonstrations<br>
+3. <em>RLHF</em>: reward model trained on human preferences → PPO optimization`,
+  codeblock:`from openai import AzureOpenAI
+client = AzureOpenAI(
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    api_version="2024-02-01"
+)
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role":"user","content":"..."}]
+)`,
+  example:`Core LLM in your RAG chatbot (20% L0 reduction) and NeuroSAN orchestrator (85% efficiency gain).`,
+  models:["gpt-4o","gpt-4-turbo","gpt-35-turbo","gpt-4-vision"],
+  usecases:["Orchestration reasoning","RAG answer generation","Code generation","Document analysis","Multi-agent brain"],
+  keypoint:"Azure OpenAI = GPT-4 with enterprise SLA, private network, no data sharing, compliance. Always prefer MSI over API key in corporate environments."
+},
+{
+  id:"bert", cat:"model", emoji:"🔍", tag:"model", tagLabel:"Model",
+  term:"BERT",
+  tagline:"Google's encoder model — the best classifier/embedder",
+  chain:["BERT","Transformer","Encoder-Only","MLM Training","Fine-tuning"],
+  what:`BERT (2018, Google) is an <strong>encoder-only Transformer</strong> trained with masked language modeling (MLM). Instead of predicting next token (GPT), BERT predicts randomly <em>masked</em> tokens — forcing it to understand context from both directions.`,
+  how:`<b>MLM (Masked Language Modeling)</b>: mask 15% of tokens → predict them. Forces bidirectional understanding.<br><br>
+<b>Fine-tuning:</b> Add classification head on [CLS] token → train on labeled data.`,
+  codeblock:`Input:  [CLS] The ticket is urgent [SEP]
+         ↓ bidirectional attention
+[CLS] token → classification head
+         ↓ Softmax → Priority: P1 (0.87)`,
+  example:`Your IT Service Desk Automation used BERT + RoBERTa for ticket classification → 92% routing accuracy.`,
+  models:["BERT-base","BERT-large","DistilBERT","BioBERT","Legal-BERT"],
+  usecases:["Text classification","NER","Sentence embeddings","Question answering"],
+  keypoint:"BERT = read/understand. GPT = write/generate. For classification tasks, BERT is usually better."
+},
+{
+  id:"roberta", cat:"model", emoji:"💪", tag:"model", tagLabel:"Model",
+  term:"RoBERTa",
+  tagline:"Facebook's improved BERT — trained longer, better results",
+  chain:["RoBERTa","BERT","Encoder-Only","Fine-tuning"],
+  what:`RoBERTa (2019, Facebook) is BERT trained with better hyperparameters and more data. Same architecture, different training recipe. Usually outperforms BERT on most benchmarks.`,
+  how:`<b>What changed vs BERT:</b><br>
+— No NSP (Next Sentence Prediction)<br>
+— Larger batches and more data (160GB vs 16GB)<br>
+— Dynamic masking<br>
+— Longer training (300K steps)<br>
+Result: 1-3% absolute improvement over BERT on GLUE benchmarks.`,
+  example:`Used alongside BERT in your NLP IT Service Desk system. The combined 92% accuracy reflects both models.`,
+  models:["roberta-base","roberta-large","distilroberta","XLM-RoBERTa (multilingual)"],
+  usecases:["All BERT use cases","Sentiment analysis","Document classification"],
+  keypoint:"When in doubt between BERT and RoBERTa for classification — use RoBERTa. Same architecture, consistently better."
+},
+{
+  id:"mistral", cat:"model", emoji:"🌪️", tag:"model", tagLabel:"Model",
+  term:"Mistral",
+  tagline:"Efficient open-source LLM — outperforms LLaMA on same size",
+  chain:["Mistral","Transformer","Decoder-Only","SWA + GQA","Fine-tuning"],
+  what:`Mistral 7B (2023) is an open-weight LLM that outperforms LLaMA 2 13B despite having fewer parameters. Uses <strong>Sliding Window Attention (SWA)</strong> and <strong>Grouped Query Attention (GQA)</strong>.`,
+  how:`<b>SWA:</b> Each token attends to only W previous tokens — efficient for long sequences.<br>
+<b>GQA:</b> Multiple query heads share one key-value head — reduces memory footprint.<br>
+<b>Mixtral 8x7B (MoE):</b> 8 expert layers, top-2 routing per token.`,
+  example:`You fine-tuned Mistral for enterprise RAG use cases at Cognizant as a cost-effective alternative to GPT-4.`,
+  models:["mistral-7b-instruct","Mixtral-8x7B","Mistral-Large","Codestral"],
+  usecases:["Local deployment","Fine-tuning for domain","Cost-effective inference","RAG backbone"],
+  keypoint:"Mistral 7B beats LLaMA 2 13B. Use it when you need an open, fine-tunable model."
+},
+{
+  id:"llama", cat:"model", emoji:"🦙", tag:"model", tagLabel:"Model",
+  term:"LLaMA — Meta's Open LLM Family",
+  tagline:"Meta's open-weight model family — the base for most open LLMs",
+  chain:["LLaMA","Transformer","Decoder-Only","LoRA Fine-tuning"],
+  what:`LLaMA (Large Language Model Meta AI) is Meta's open-weight model family. LLaMA 3 (2024) is the most widely used open-source base model for fine-tuning.`,
+  how:`<b>Architecture improvements:</b><br>
+— <em>RMSNorm</em>: normalize input to each sub-layer → more stable training<br>
+— <em>SwiGLU activation</em>: replacement for ReLU → better performance<br>
+— <em>RoPE</em>: Rotary Positional Embeddings — better sequence position handling`,
+  example:`You fine-tuned LLaMA (with LoRA) for enterprise RAG use cases at Cognizant for domain-specific terminology.`,
+  models:["LLaMA-2-7B/13B/70B","LLaMA-3-8B/70B","Code LLaMA"],
+  usecases:["Base model for fine-tuning","Self-hosted inference","Domain adaptation"],
+  keypoint:"LLaMA = best open-source base to fine-tune. If you can't use GPT-4 for cost/privacy reasons, fine-tune LLaMA."
+},
+{
+  id:"ollama", cat:"model", emoji:"🖥️", tag:"model", tagLabel:"Model",
+  term:"Ollama",
+  tagline:"Run LLMs locally on your machine — zero cloud dependency",
+  chain:["Ollama","Local LLM","llama.cpp","GGUF format"],
+  what:`Ollama lets you <strong>run open-source LLMs locally</strong> without any cloud dependency. Manages model downloads, quantization, and exposes an OpenAI-compatible REST API.`,
+  how:`Downloads GGUF-format quantized models → runs via llama.cpp → exposes <code>localhost:11434</code>.<br>
+<b>Quantization:</b> 7B model: 28GB (FP32) → ~4GB (Q4). Slight quality loss, massive memory savings.`,
+  codeblock:`ollama run mistral
+ollama run llama3
+
+# OpenAI-compatible Python
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")`,
+  example:`Used for local development and testing of RAG pipelines before deploying to Azure OpenAI. Iterate fast without API costs.`,
+  models:["llama3, mistral, phi3, gemma2, codellama, qwen2 (all GGUF)"],
+  usecases:["Local dev/testing","Privacy-sensitive workloads","Offline inference","Cost-free iteration"],
+  keypoint:"Ollama = Docker for LLMs. `ollama run llama3` = running a 7B model locally in one command. Same API as OpenAI."
+},
+
+// ─── FINE-TUNING ──────────────────────────────────────────────
+{
+  id:"finetune", cat:"finetune", emoji:"🎯", tag:"core", tagLabel:"Fine-tuning",
+  term:"Fine-tuning",
+  tagline:"Adapting a pre-trained model to your specific domain/task",
+  chain:["Pre-trained Model","Fine-tuning","LoRA","Instruction Tuning","RLHF"],
+  what:`Fine-tuning is continuing training a pre-trained model on your specific dataset. <strong>PEFT (Parameter-Efficient Fine-Tuning)</strong> freezes most weights and only trains small adapter layers.`,
+  how:`<b>When to fine-tune vs RAG:</b><br>
+— Fine-tune: change model behavior/style, domain jargon<br>
+— RAG: access up-to-date facts, proprietary documents<br><br>
+Training data format: (instruction, response) JSONL pairs.`,
+  codeblock:`{"prompt": "Classify ticket: 'VPN not connecting'",
+ "completion": "Category: Network, Priority: P1"}
+
+from peft import LoraConfig, get_peft_model
+config = LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","v_proj"])
+model = get_peft_model(base_model, config)`,
+  example:`You fine-tuned Mistral, LLaMA, and LoRA-based models for enterprise RAG use cases at Cognizant.`,
+  models:["Mistral-7B","LLaMA-3","GPT-3.5-turbo","BERT"],
+  usecases:["Domain adaptation","Custom instruction following","Style/tone adjustment"],
+  keypoint:"Fine-tune for behavior/style. Use RAG for factual grounding. Both together = most robust enterprise AI."
+},
+{
+  id:"lora", cat:"finetune", emoji:"🪢", tag:"core", tagLabel:"Fine-tuning",
+  term:"LoRA — Low-Rank Adaptation",
+  tagline:"Fine-tune only 0.1% of weights — same results, 1000x cheaper",
+  chain:["Fine-tuning","LoRA","Adapter Layers","PEFT","QLoRA"],
+  what:`LoRA freezes all original model weights and adds small trainable rank-decomposition matrices. Only trains these tiny matrices — achieving near full fine-tuning quality at 1/100th the compute.`,
+  how:`<b>Math:</b> W → W + ΔW, where ΔW = A × B<br>
+A is (d × r), B is (r × d), r = rank (e.g., 16).<br>
+Params added: 2 × 4096 × 16 = 131K (vs 16M original).<br>
+<b>QLoRA:</b> 4-bit quantized model + LoRA adapters. Fine-tune 65B on single GPU.`,
+  codeblock:`config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=16,          # rank
+    lora_alpha=32,
+    target_modules=["q_proj", "v_proj"],
+    lora_dropout=0.05
+)
+model = get_peft_model(base_model, config)
+# Only 0.1% of params trainable!`,
+  example:`Your LoRA-based model fine-tuning at Cognizant. LoRA adapters saved as small ~100MB files, not 14GB model copies.`,
+  models:["All open LLMs via HuggingFace PEFT","QLoRA for 4-bit quantized training"],
+  usecases:["Domain fine-tuning on single GPU","Multiple task-specific adapters for same base model"],
+  keypoint:"LoRA rank r controls capacity. r=4 for simple tasks, r=64 for complex. Always target q_proj and v_proj."
+},
+{
+  id:"prompting", cat:"finetune", emoji:"✍️", tag:"core", tagLabel:"Fine-tuning",
+  term:"Prompt Engineering",
+  tagline:"Crafting inputs to steer LLM behavior without changing weights",
+  chain:["Prompt Engineering","Zero-Shot","Few-Shot","Chain-of-Thought","System Prompt"],
+  what:`Prompt engineering is designing inputs to get desired outputs from LLMs. No model training required — just better instructions.`,
+  how:`<b>Techniques:</b><br>
+<em>Zero-shot</em>: describe the task directly.<br>
+<em>Few-shot</em>: provide 3-5 examples before the actual query.<br>
+<em>Chain-of-Thought (CoT)</em>: "Think step by step" — forces reasoning trace.<br>
+<em>System prompt</em>: persistent instructions shaping model behavior.<br>
+<em>ReAct pattern</em>: Thought → Action → Observation → repeat.`,
+  codeblock:`# ReAct prompt (used in your NeuroSAN agents)
+system: "You are an IT agent. Use tools to resolve requests.
+Format: Thought: ... Action: tool_name(args) Observation: ..."
+
+user: "My VPN is not working"
+assistant:
+  Thought: User has connectivity issue. Check known outages first.
+  Action: check_outage_status("VPN")
+  Observation: No active outages.`,
+  example:`Used throughout your system — from AAOSA agent descriptions (which are prompts that route the orchestrator) to your RAG chatbot's system prompt.`,
+  models:["Works on any LLM"],
+  usecases:["Behavior control without fine-tuning","Tool-calling agents","Structured output generation"],
+  keypoint:"The function.description in your HOCON config IS a prompt — it tells the LLM how to use that agent."
+},
+
+// ─── RAG & SEARCH ─────────────────────────────────────────────
+{
+  id:"rag", cat:"rag", emoji:"🔎", tag:"rag", tagLabel:"RAG",
+  term:"RAG — Retrieval Augmented Generation",
+  tagline:"Ground LLM answers in real documents — kill hallucinations",
+  chain:["User Query","Embed","Vector Search","Retrieve Chunks","LLM + Context","Answer"],
+  what:`RAG combines <strong>information retrieval + LLM generation</strong>. Instead of asking the LLM to recall facts from training (unreliable), you retrieve relevant documents at query time and feed them as context.`,
+  how:`<b>Indexing (offline):</b><br>
+1. Split documents → chunks (512 tokens)<br>
+2. Embed each chunk<br>
+3. Store in vector DB<br><br>
+<b>Querying (online):</b><br>
+1. Embed user query<br>
+2. Retrieve top-k similar chunks<br>
+3. Prompt = [System] + [Chunks] + [Query]<br>
+4. LLM generates grounded answer`,
+  codeblock:`system_prompt = """Answer ONLY using the provided context.
+If not in context, say 'I don't know'."""
+
+user_prompt = f"""
+Context: {retrieved_chunks}
+Question: {user_query}
+"""`,
+  example:`Your RAG chatbot: Azure AI Search over ServiceNow KB → GPT-4 answers → 20% L0 ticket reduction.`,
+  models:["Embedding: OpenAI ada-002","Retrieval: Azure AI Search, Pinecone","Generation: GPT-4, Mistral"],
+  usecases:["Enterprise knowledge bases","IT helpdesk automation","Document Q&A","Customer support"],
+  keypoint:"RAG = search + generate. Retrieval quality determines 80% of answer quality."
+},
+{
+  id:"hybridsearch", cat:"rag", emoji:"⚡", tag:"rag", tagLabel:"RAG",
+  term:"Hybrid Search",
+  tagline:"Vector search + keyword search combined — best of both worlds",
+  chain:["Query","BM25 (keyword)","Vector (semantic)","RRF Fusion","Top-k Results"],
+  what:`Hybrid search combines <strong>BM25 keyword search and semantic vector search</strong>. Vector alone misses exact matches (IDs, acronyms). BM25 alone misses synonyms.`,
+  how:`<b>BM25:</b> Term frequency × inverse document frequency. Exact word matching.<br>
+<b>Vector search:</b> Cosine similarity on embeddings. Semantic matches.<br>
+<b>RRF Fusion:</b> RRF_score(d) = Σ 1/(60 + rank_i(d)) — combines both rankings.`,
+  codeblock:`results = search_client.search(
+    search_text=user_query,        # BM25
+    vector_queries=[VectorizedQuery(
+        vector=embed(user_query),  # semantic
+        fields="content_vector"
+    )],
+    query_type=QueryType.SEMANTIC,
+    top=5
+)`,
+  example:`Your RAG chatbot used hybrid search in Azure AI Search — pure vector missed "INC0001234" exact IDs, hybrid caught them via BM25.`,
+  models:["Azure AI Search (built-in hybrid)","Weaviate","Elasticsearch"],
+  usecases:["Enterprise knowledge bases with IDs","Mixed formal+informal queries"],
+  keypoint:"Always use hybrid in enterprise. Pure vector loses on acronyms/IDs. Pure BM25 loses on paraphrases. Hybrid wins both."
+},
+{
+  id:"chunking", cat:"rag", emoji:"✂️", tag:"rag", tagLabel:"RAG",
+  term:"Document Chunking & Indexing",
+  tagline:"How you split documents before embedding — critical to RAG quality",
+  chain:["Document","Chunking Strategy","Embedding","Vector Index","Retrieval"],
+  what:`Chunking splits large documents into smaller pieces for embedding. <strong>Chunk size directly impacts RAG quality</strong> — too large = noisy context, too small = missing context.`,
+  how:`<b>Strategies:</b><br>
+<em>Fixed-size</em>: split every N tokens. Simple but cuts sentences.<br>
+<em>Recursive character splitting</em>: try paragraph → sentence → word. LangChain default.<br>
+<em>Semantic chunking</em>: split when embedding similarity drops.<br>
+<b>Chunk overlap:</b> overlap adjacent chunks by ~10-15%.`,
+  codeblock:`from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=512,
+    chunk_overlap=50,
+    separators=["\n\n", "\n", ". ", " "]
+)
+chunks = splitter.split_documents(docs)`,
+  example:`Your Contract Intelligence Platform: contracts chunked by clause/section boundaries → each retrieved chunk = one contractual obligation.`,
+  models:["LangChain TextSplitters","Azure Document Intelligence (layout-aware)"],
+  usecases:["Legal document RAG","Technical documentation","Knowledge base ingestion"],
+  keypoint:"Chunk size ~512 tokens for most cases. Use section-aware chunking for structured docs. Always add overlap."
+},
+{
+  id:"reranking", cat:"rag", emoji:"🏆", tag:"rag", tagLabel:"RAG",
+  term:"Reranking",
+  tagline:"Re-score top-k retrieved chunks for precision before LLM call",
+  chain:["Initial Retrieval (top-50)","Cross-Encoder Reranker","Top-5","LLM"],
+  what:`Reranking adds a second-stage model that re-scores retrieved chunks for better precision. First retrieval = recall (get 50 candidates). Reranking = precision (pick best 5 to send LLM).`,
+  how:`<b>Bi-encoder (retrieval):</b> embed independently → cosine similarity. Fast.<br>
+<b>Cross-encoder (reranking):</b> feed [query, doc] pair together → single relevance score. More accurate, slower.<br>
+<em>Azure Semantic Ranking</em>: built-in reranker in Azure AI Search.`,
+  example:`Azure AI Search's semantic reranker in your RAG chatbot: initial hybrid search → 20 candidates → reranker → top 3-5 → GPT-4.`,
+  models:["Azure AI Search Semantic Ranking","Cohere Rerank","BGE Reranker"],
+  usecases:["RAG precision improvement","Search result quality"],
+  keypoint:"Add reranker between retrieval and generation. Retrieval = recall, reranker = precision."
+},
+{
+  id:"graphrag", cat:"rag", emoji:"🕸️", tag:"rag", tagLabel:"RAG",
+  term:"Advanced RAG Patterns",
+  tagline:"HyDE, Self-Query, Multi-Query — beyond basic RAG",
+  chain:["Basic RAG","HyDE","Self-Query","Multi-Query","Agentic RAG"],
+  what:`Beyond basic RAG, several patterns improve retrieval quality for harder queries.`,
+  how:`<b>HyDE:</b> LLM generates hypothetical answer → embed that → retrieve.<br>
+<b>Multi-Query:</b> Generate 3 query variants → retrieve for each → union results.<br>
+<b>Self-Query:</b> LLM converts query to structured filter + semantic query.<br>
+<b>Agentic RAG:</b> Agent decides what/when to retrieve.`,
+  example:`Your Contract Intelligence Platform used Self-Query (date filters + semantic). Your multi-agent system uses Agentic RAG.`,
+  models:["LangChain MultiQueryRetriever","LlamaIndex HyDE"],
+  usecases:["Complex queries needing filters","Multi-hop Q&A","Time-sensitive retrieval"],
+  keypoint:"Basic RAG fails on complex queries. Use Multi-Query for recall, Self-Query for structured data, HyDE for vague queries."
+},
+{
+  id:"azureaisearch", cat:"rag", emoji:"🔷", tag:"azure", tagLabel:"Azure",
+  term:"Azure AI Search",
+  tagline:"Microsoft's enterprise search — hybrid search + semantic ranking",
+  chain:["Azure AI Search","Index","Hybrid Search","Semantic Ranker","REST API"],
+  what:`Azure AI Search (formerly Cognitive Search) is Microsoft's <strong>cloud search service supporting vector, keyword, and hybrid search</strong> with built-in semantic ranking.`,
+  how:`<b>Components:</b><br>
+<em>Index</em>: schema-defined store with text + vector fields.<br>
+<em>Indexer</em>: automated pipeline from Blob/SQL → chunk → embed → index.<br>
+<em>Semantic config</em>: defines fields for semantic reranking.`,
+  codeblock:`fields = [
+    SimpleField("id", type=SearchFieldDataType.String, key=True),
+    SearchableField("content", type=SearchFieldDataType.String),
+    SearchField("content_vector",
+                type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
+                vector_search_dimensions=1536,
+                vector_search_profile_name="myProfile")
+]`,
+  example:`Core of your RAG chatbot. Azure AI Search indexes ServiceNow KB → hybrid search → top-5 chunks → GPT-4 → 20% L0 ticket reduction.`,
+  models:["Azure OpenAI embeddings","Supports any vector (BYO)"],
+  usecases:["Enterprise RAG","Document intelligence","Knowledge management"],
+  keypoint:"Azure AI Search = managed vector+keyword search with enterprise compliance. Use indexer for automated ingestion."
+},
+
+// ─── VECTOR DBs ───────────────────────────────────────────────
+{
+  id:"faiss", cat:"vecdb", emoji:"⚡", tag:"rag", tagLabel:"Vector DB",
+  term:"FAISS",
+  tagline:"Fast local vector search library — no server needed",
+  chain:["FAISS","IVF Index","HNSW","Flat Index","ANN Search"],
+  what:`FAISS is an open-source <strong>vector similarity search library</strong> by Facebook AI Research. Runs in-process, extremely fast, optimized for billion-scale vector search.`,
+  how:`<b>Index types:</b><br>
+<em>IndexFlatL2</em>: exact brute force. Use for small datasets.<br>
+<em>IndexIVFFlat</em>: approximate with clusters. Faster, slight accuracy loss.<br>
+<em>IndexHNSW</em>: graph-based. Best recall/speed tradeoff.`,
+  codeblock:`index = faiss.IndexFlatL2(1536)
+index.add(vectors)
+D, I = index.search(query_vec, k=5)`,
+  example:`Used for local development before Azure AI Search deployment. In-memory vector store for fast iteration.`,
+  models:["FAISS CPU/GPU","LangChain FAISS integration"],
+  usecases:["Local RAG prototyping","Batch processing","Offline search"],
+  keypoint:"FAISS = local, fast, free. No persistence — must save/load manually. Use for dev, Azure AI Search for prod."
+},
+{
+  id:"pinecone", cat:"vecdb", emoji:"🌲", tag:"rag", tagLabel:"Vector DB",
+  term:"Pinecone",
+  tagline:"Managed vector database — production-grade, serverless",
+  chain:["Pinecone","Index","Upsert","Query","Namespace","Metadata Filter"],
+  what:`Pinecone is a <strong>fully managed vector database</strong> for production ML applications. Handles indexing, scaling, and serving at scale.`,
+  how:`<b>Core concepts:</b><br>
+<em>Index</em>: named vector store with fixed dimension.<br>
+<em>Namespace</em>: logical partition for multi-tenant isolation.<br>
+<em>Metadata</em>: key-value pairs for filtered queries.`,
+  codeblock:`index.upsert(vectors=[
+    ("id1", embedding, {"source": "kb", "date": "2024"})
+])
+results = index.query(
+    vector=query_embedding, top_k=5,
+    filter={"date": {"$gte": "2024"}}
+)`,
+  example:`Used in your RAG pipelines with namespace per user and metadata filters for date-based retrieval.`,
+  models:["Works with any embedding model","Native LangChain + LlamaIndex integration"],
+  usecases:["Production RAG","Multi-tenant vector search","Semantic recommendation"],
+  keypoint:"Pinecone = easiest path to production vector search. Serverless tier for variable traffic. Namespace for multi-tenancy."
+},
+{
+  id:"weaviate", cat:"vecdb", emoji:"🕸️", tag:"rag", tagLabel:"Vector DB",
+  term:"Weaviate",
+  tagline:"Open-source vector DB with graph-like object storage",
+  chain:["Weaviate","Schema","Classes","Vector+BM25","Cross-References"],
+  what:`Weaviate is an <strong>open-source vector database</strong> combining vector search with structured object storage. Stores full objects (not just IDs) and supports cross-object references.`,
+  how:`<b>Schema-driven:</b> Define classes with properties. Vectors auto-generated via configured vectorizer.<br>
+<b>Built-in hybrid:</b> Native BM25F + nearVector.<br>
+<b>Cross-references:</b> Link objects graph-like.`,
+  example:`Advantage over Pinecone: stores full document content, built-in BM25, schema-based organization for structured enterprise data.`,
+  models:["text2vec-openai","Any transformer model"],
+  usecases:["Full object storage + search","Multi-class knowledge graphs","Self-hosted vector search"],
+  keypoint:"Weaviate stores full objects. Pinecone stores vectors+IDs. Choose Weaviate when vector DB should also be your document store."
+},
+{
+  id:"redis", cat:"vecdb", emoji:"🔴", tag:"rag", tagLabel:"Vector DB",
+  term:"Redis (Vector & Cache)",
+  tagline:"In-memory store for caching LLM responses + session state",
+  chain:["Redis","RediSearch","Vector Index","Hash/JSON","TTL Cache"],
+  what:`Redis is used in AI systems for: <strong>semantic caching of LLM responses</strong>, session state for multi-turn conversations, and vector search via RediSearch.`,
+  how:`<b>Semantic caching:</b> Store (query_embedding → LLM_response). Similar query → return cached → save 50-80% API costs.<br>
+<b>Session state:</b> Conversation history in Redis with TTL.<br>
+<b>Vector search:</b> RediSearch HNSW index for real-time applications.`,
+  codeblock:`# Cache miss → call LLM → store with TTL
+response = call_llm(user_query)
+r.hset(f"cache:{query_id}", {"response": response})
+r.expire(f"cache:{query_id}", 3600)  # 1hr TTL`,
+  example:`Agent state persistence and LLM response caching in your multi-agent system.`,
+  models:["Redis Stack","Azure Cache for Redis","Upstash (serverless)"],
+  usecases:["LLM response caching","Conversation state","Rate limiting","Real-time vector search"],
+  keypoint:"Redis = speed layer. Cache LLM responses to cut costs. Store agent state for multi-turn."
+},
+
+// ─── LANGCHAIN STACK ──────────────────────────────────────────
+{
+  id:"langchain", cat:"framework", emoji:"🔗", tag:"framework", tagLabel:"Framework",
+  term:"LangChain",
+  tagline:"Python framework for composing LLM-powered applications",
+  chain:["LangChain","Chain","Agent","Tool","Memory","Callback"],
+  what:`LangChain provides <strong>abstractions for building LLM-powered applications</strong>: LLM calls, prompt management, retrieval, tools, agents, and chains as composable building blocks.`,
+  how:`<b>LCEL (LangChain Expression Language):</b> pipe operator composition<br>
+<code>chain = prompt | llm | parser</code><br><br>
+<b>Core primitives:</b> Chain, Agent, Tool, Memory, Retriever, Callback.`,
+  codeblock:`llm = AzureChatOpenAI(deployment_name="gpt-4o")
+prompt = ChatPromptTemplate.from_template("Answer: {question}")
+chain = prompt | llm | StrOutputParser()
+
+# RAG chain
+rag_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt | llm | StrOutputParser()
+)`,
+  example:`Core framework for your middleware pipelines, summarization chains, and HitL checkpoints.`,
+  models:["Azure OpenAI, Anthropic, Ollama, HuggingFace","Retrievers: Azure AI Search, Pinecone, FAISS"],
+  usecases:["RAG applications","Multi-step LLM pipelines","Agent-tool workflows","Summarization"],
+  keypoint:"LCEL (pipe syntax) is the modern way. Avoid deprecated Chain classes."
+},
+{
+  id:"langgraph", cat:"framework", emoji:"🕸️", tag:"framework", tagLabel:"Framework",
+  term:"LangGraph",
+  tagline:"Graph-based framework for stateful multi-agent workflows",
+  chain:["LangGraph","StateGraph","Node","Edge","AgentState","Checkpointer"],
+  what:`LangGraph builds <strong>stateful, cyclical agent workflows as graphs</strong>. Supports loops, conditional branches, and persistent state — enabling complex multi-agent systems with HitL.`,
+  how:`<b>Core concepts:</b><br>
+<em>StateGraph</em>: nodes = functions, edges = transitions.<br>
+<em>AgentState</em>: TypedDict passed between nodes.<br>
+<em>Conditional edges</em>: route based on state.<br>
+<em>Checkpointer</em>: persist state → enables HitL and resumable workflows.`,
+  codeblock:`graph = StateGraph(AgentState)
+graph.add_node("agent", agent_fn)
+graph.add_node("approve", approval_node)
+graph.add_conditional_edges("agent",
+    lambda s: "approve" if s["risk"] > 0.8 else END)
+
+app = graph.compile(
+    checkpointer=checkpointer,
+    interrupt_before=["approve"]
+)`,
+  example:`Your Human-in-the-Loop implementation uses LangGraph's checkpointer to pause agent workflows awaiting CAB approval.`,
+  models:["LangGraph 0.2+","Works with any LangChain LLM"],
+  usecases:["Multi-agent workflows","HitL systems","Long-running agents","Cyclic reasoning"],
+  keypoint:"LangGraph = LangChain for stateful agents with loops. Use it if your workflow has cycles (retry, HitL, reflection)."
+},
+{
+  id:"langsmith", cat:"framework", emoji:"🔬", tag:"ops", tagLabel:"LLMOps",
+  term:"LangSmith",
+  tagline:"Observability and debugging platform for LangChain apps",
+  chain:["LangSmith","Trace","Run","Feedback","Dataset","Eval"],
+  what:`LangSmith automatically captures every LLM call, chain execution, and tool invocation — enabling debugging, evaluation, and monitoring of production LLM apps.`,
+  how:`<b>Auto-tracing:</b> Set <code>LANGCHAIN_TRACING_V2=true</code> → all runs auto-logged.<br>
+<b>Datasets + Evals:</b> Golden dataset → run evaluators → regression testing.<br>
+<b>Human feedback:</b> Thumbs up/down → labeled dataset → fine-tune signals.`,
+  example:`Used in your middleware pipelines for chain-level debugging. LangSmith replay showed exactly which step diverged when SummarizationMiddleware produced wrong output.`,
+  models:["All LangChain integrations auto-traced"],
+  usecases:["Chain debugging","Production monitoring","Regression testing","Prompt iteration"],
+  keypoint:"LangSmith = flight recorder for LangChain. Set 2 env vars → full trace visibility."
+},
+{
+  id:"crewai", cat:"framework", emoji:"👥", tag:"framework", tagLabel:"Framework",
+  term:"CrewAI",
+  tagline:"Role-based multi-agent framework — crews of specialized agents",
+  chain:["CrewAI","Crew","Agent","Task","Process","Tool"],
+  what:`CrewAI defines <strong>crews of agents with roles, goals, and backstories</strong> collaborating to complete complex tasks. Higher-level abstraction than LangGraph.`,
+  how:`<b>Core primitives:</b><br>
+<em>Agent</em>: role + goal + backstory + tools.<br>
+<em>Task</em>: what needs done, assigned agent.<br>
+<em>Process</em>: Sequential or Hierarchical (manager delegates).`,
+  codeblock:`researcher = Agent(role="IT Analyst", goal="Analyze incidents",
+    backstory="Expert in IT...", tools=[search_tool])
+task = Task(description="Analyze incident...", agent=researcher)
+crew = Crew(agents=[researcher], tasks=[task], process=Process.sequential)
+result = crew.kickoff()`,
+  example:`Used for rapid prototyping of multi-agent workflows before implementing production versions in NeuroSAN.`,
+  models:["OpenAI, Azure OpenAI, Ollama, Anthropic"],
+  usecases:["Research + synthesis","Rapid multi-agent prototyping"],
+  keypoint:"CrewAI = fast prototyping. Use for demos. Use LangGraph or NeuroSAN for production."
+},
+
+// ─── MULTI-AGENT ──────────────────────────────────────────────
+{
+  id:"multiagent", cat:"agent", emoji:"🤝", tag:"agent", tagLabel:"Multi-Agent",
+  term:"Multi-Agent Orchestration",
+  tagline:"Multiple specialized AI agents collaborating to solve complex tasks",
+  chain:["Orchestrator","Sub-Agents","Tool Calls","State Passing","Response Synthesis"],
+  what:`Multi-agent orchestration involves <strong>multiple AI agents — each with specialized skills — coordinating to complete tasks</strong> too complex for a single agent.`,
+  how:`<b>Hierarchical:</b> one orchestrator, N sub-agents. (Your NeuroSAN architecture)<br>
+<b>Sequential:</b> agent 1 output → agent 2 input → ...<br>
+<b>Why multiple agents?</b> Context limits, specialization, parallelism.`,
+  codeblock:`User: "Request laptop and update CAB ticket"
+Orchestrator → [SEAT_Agent, CAB_Agent]
+SEAT_Agent: check_inventory() → "Dell XPS 15 available"
+CAB_Agent: update_ticket("CHG0001234")
+Orchestrator: synthesize → final response`,
+  example:`Your NeuroSAN system: Main Orchestrator + 7 sub-agents → 85% efficiency/accuracy gain.`,
+  models:["NeuroSAN","LangGraph","CrewAI","AutoGen","Google ADK"],
+  usecases:["Complex IT automation","Research pipelines","Customer service triage"],
+  keypoint:"Orchestrator's routing quality determines overall system quality."
+},
+{
+  id:"neurosan", cat:"agent", emoji:"🧬", tag:"agent", tagLabel:"NeuroSAN",
+  term:"NeuroSAN (Neuro-SAN)",
+  tagline:"Cognizant AI Labs' multi-agent framework — HOCON-configured agents",
+  chain:["NeuroSAN","HOCON Config","AAOSA","Agent Network","CodedTool","sly_data"],
+  what:`NeuroSAN is Cognizant AI Labs' multi-agent framework where agents are <strong>configured entirely in HOCON files</strong>. The LLM reads agent descriptions and decides routing dynamically.`,
+  how:`<b>Key components:</b><br>
+<em>Agent manifest (HOCON)</em>: defines agent network<br>
+<em>function.description</em>: prompt that tells the LLM about this agent<br>
+<em>AAOSA pattern</em>: each agent can delegate down<br>
+<em>CodedTool</em>: Python class registered as callable tool<br>
+<em>sly_data</em>: side-channel for non-conversational data`,
+  codeblock:`agents {
+  Orchestrator {
+    function.description = "Routes requests to specialists."
+    tools = [\${aaosa_call}]
+    downstream = ["ServiceNow_Agent", "SEAT_Agent", "FAQ_Agent"]
+  }
+  SEAT_Agent {
+    function.description = "Manages Flexi Seat bookings."
+    coded_tool = "SeatBookingTool"  # exact class name!
+  }
+}`,
+  example:`Your primary production framework at Cognizant. Built Main Orchestrator + 7 sub-agents. Achieved 85% efficiency gain.`,
+  models:["Azure OpenAI GPT-4 as backbone"],
+  usecases:["Enterprise multi-agent automation","IT service management","HR workflows"],
+  keypoint:"NeuroSAN routing = driven by function.description quality. Better descriptions = better routing."
+},
+{
+  id:"aaosa", cat:"agent", emoji:"🔀", tag:"agent", tagLabel:"Multi-Agent",
+  term:"AAOSA Pattern",
+  tagline:"Agent As Orchestrator Sub-Agent — recursive multi-agent delegation",
+  chain:["Orchestrator","AAOSA Call","Sub-Agent","Recursive Delegation","Response"],
+  what:`AAOSA is the NeuroSAN pattern where <strong>any agent can act as both orchestrator AND sub-agent</strong> — enabling recursive, hierarchical task delegation.`,
+  how:`1. Agent receives request from parent orchestrator<br>
+2. If can handle → uses CodedTool → returns result<br>
+3. If needs delegation → becomes orchestrator → calls downstream agents<br><br>
+<b>\${aaosa_call} HOCON marker:</b> enables calling downstream agents.`,
+  codeblock:`# Recursive delegation:
+User → Orchestrator
+  → HR_Agent (has \${aaosa_call})
+    → PLA_Agent (leaf, calls API)
+    → Skills_Agent (leaf, queries DB)
+  → ServiceNow_Agent (leaf)`,
+  example:`Your SEAT_Agent, CAB_Agent are leaf AAOSA nodes. Main Orchestrator has \${aaosa_call} to delegate.`,
+  models:["NeuroSAN-specific"],
+  usecases:["Deep task decomposition","Enterprise workflow automation"],
+  keypoint:"AAOSA = every agent is potentially an orchestrator. Write precise function.descriptions for accurate routing."
+},
+{
+  id:"hocon", cat:"agent", emoji:"⚙️", tag:"agent", tagLabel:"Multi-Agent",
+  term:"HOCON Config",
+  tagline:"Human-Optimized Config Notation — defines NeuroSAN agents",
+  chain:["HOCON","Variable Substitution","Includes","Type Coercion","JSON superset"],
+  what:`HOCON is a JSON superset used by NeuroSAN to define agent networks. Supports <strong>variable substitution, includes, and inheritance</strong>.`,
+  how:`<b>Key features:</b><br>
+<em>Variable substitution</em>: <code>\${variable_name}</code><br>
+<em>Include</em>: <code>include "base.hocon"</code><br>
+<em>Object merging</em>: later definitions override earlier<br>
+<em>Type coercion</em>: "true" → boolean automatically`,
+  codeblock:`include "shared/aaosa_base.hocon"
+
+agents.SEAT_Agent {
+  function.description = "Manages seat booking."
+  max_tokens = 1024   # int coercion
+  enabled = true      # bool coercion
+}`,
+  example:`Every agent in your NeuroSAN system is defined in HOCON. You worked on overriding sub-agent function.description fields.`,
+  models:["NeuroSAN-specific","TypeSafe Config library"],
+  usecases:["NeuroSAN agent configuration","Complex nested configurations"],
+  keypoint:"HOCON \${variable} substitution avoids copy-paste across agents. The aaosa_call variable is the key building block."
+},
+{
+  id:"hitl", cat:"agent", emoji:"🧑‍💻", tag:"agent", tagLabel:"Multi-Agent",
+  term:"Human-in-the-Loop (HitL)",
+  tagline:"Pause AI workflow, get human decision, resume",
+  chain:["Agent","Checkpoint","Pause","Human Review","Resume","AgentState"],
+  what:`HitL inserts <strong>human decision points into automated AI workflows</strong>. When reaching a high-stakes action, the agent pauses, presents context, and waits for human approval.`,
+  how:`<b>LangGraph implementation:</b><br>
+1. <code>interrupt_before=["action_node"]</code><br>
+2. Graph pauses, state serialized<br>
+3. Human reviews and provides input<br>
+4. <code>graph.update_state(config, {"approved": True})</code><br>
+5. Graph resumes`,
+  codeblock:`app = graph.compile(
+    checkpointer=checkpointer,
+    interrupt_before=["request_approval"]
+)
+# Graph pauses here for human input
+# Resume after approval:
+app.update_state(config, {"approved": True})
+app.invoke(None, config=config)  # resume`,
+  example:`Your CAB approval workflow: agent plans change → risk > threshold → HitL pause → CAB member approves → agent resumes.`,
+  models:["LangGraph","LangChain","NeuroSAN configurable gates"],
+  usecases:["Change approval","Financial transaction approval","High-risk IT operations","Compliance workflows"],
+  keypoint:"Design the human's view as a product: they need context, options, and consequences — not raw JSON state."
+},
+{
+  id:"codedtool", cat:"agent", emoji:"🔧", tag:"agent", tagLabel:"NeuroSAN",
+  term:"CodedTool (NeuroSAN)",
+  tagline:"Python class registered as callable tool in NeuroSAN agent network",
+  chain:["HOCON Config","coded_tool field","Python Class","Tool Registration","Agent Call"],
+  what:`A CodedTool wraps <strong>external API calls, DB queries, or business logic</strong> and makes them callable by NeuroSAN agents.`,
+  how:`<b>Registration:</b><br>
+1. Define Python class with <code>invoke()</code> method<br>
+2. Set <code>coded_tool = "ClassName"</code> in HOCON (EXACT match)<br>
+3. NeuroSAN registers at startup — if not found, silently skips (the bug you fixed!)`,
+  codeblock:`class SeatBookingTool:
+    def invoke(self, args: dict) -> dict:
+        action = args.get("action")
+        if action == "book":
+            return self._book_seat(args["seat_id"], args["user_id"])
+        elif action == "check":
+            return self._check_availability(args["floor"], args["date"])
+
+# HOCON: coded_tool = "SeatBookingTool"  # EXACT class name!`,
+  example:`You fixed the CodedTool registration bug: class name case mismatch → silent skip → agent described instead of executing. Solution: startup validation.`,
+  models:["NeuroSAN-specific"],
+  usecases:["ServiceNow API calls","Database queries","External service integration"],
+  keypoint:"Class name in HOCON must be EXACT string match. NeuroSAN doesn't throw on mismatch — add startup validation."
+},
+
+// ─── AZURE SERVICES ───────────────────────────────────────────
+{
+  id:"azureopenai", cat:"azure", emoji:"☁️", tag:"azure", tagLabel:"Azure",
+  term:"Azure OpenAI Service",
+  tagline:"OpenAI models on Azure with enterprise SLA",
+  chain:["Azure OpenAI","Deployment","REST API","MSI Auth","Azure VNET"],
+  what:`Azure OpenAI provides <strong>OpenAI models (GPT-4, embeddings) via Azure infrastructure</strong>. Same models, enterprise compliance: data stays in your Azure tenant.`,
+  how:`<b>Key differences from OpenAI API:</b><br>
+— Named deployments (e.g., "gpt4-prod")<br>
+— Endpoint: <code>https://YOUR-RESOURCE.openai.azure.com</code><br>
+— Auth: API key OR Azure AD (MSI) — MSI preferred<br>
+— Rate limits: TPM per deployment`,
+  codeblock:`# MSI auth (production)
+credential = ManagedIdentityCredential()
+token = credential.get_token("https://cognitiveservices.azure.com/.default")
+client = AzureOpenAI(azure_ad_token=token.token, ...)
+
+# Key auth (dev)
+client = AzureOpenAI(api_key=os.getenv("AZURE_KEY"), ...)`,
+  example:`Core of your entire AI stack. RAG chatbot, multi-agent orchestrator, and SummarizationMiddleware all use Azure OpenAI.`,
+  models:["gpt-4o","gpt-4-turbo","gpt-35-turbo","text-embedding-3-small/large"],
+  usecases:["All LLM inference","Embeddings generation","Enterprise AI with compliance"],
+  keypoint:"DefaultAzureCredential tries 7 auth methods sequentially — can timeout on corporate networks. Use explicit credential type."
+},
+{
+  id:"formrecognizer", cat:"azure", emoji:"📄", tag:"azure", tagLabel:"Azure",
+  term:"Azure Form Recognizer / Document Intelligence",
+  tagline:"Extract structured data from PDFs, forms, invoices, contracts",
+  chain:["Document Input","Form Recognizer","OCR + Layout","Key-Value Extraction","JSON"],
+  what:`Azure Form Recognizer extracts <strong>structured information from documents</strong>: text, key-value pairs, tables, and checkboxes from PDFs and images.`,
+  how:`<b>Pre-built models:</b> Invoice, Receipt, ID Document, Business Card, W2.<br>
+<b>Custom model:</b> Label 5+ samples → trains extractor for your layout.<br>
+<b>Layout model:</b> Full OCR + table detection + reading order.`,
+  codeblock:`client = DocumentAnalysisClient(endpoint, AzureKeyCredential(key))
+poller = client.begin_analyze_document("prebuilt-invoice", document=file)
+result = poller.result()
+for invoice in result.documents:
+    print(f"Vendor: {invoice.fields['VendorName'].value}")
+    print(f"Total: {invoice.fields['InvoiceTotal'].value.amount}")`,
+  example:`Your Employee Expense Management: Form Recognizer extracts receipt data → 30% processing time reduction. Contract Intelligence: extracts clauses from legal PDFs.`,
+  models:["prebuilt-invoice","prebuilt-receipt","prebuilt-layout","custom model"],
+  usecases:["Expense automation","Contract analysis","Invoice processing","Form digitization"],
+  keypoint:"Use prebuilt models first — they handle 80% of cases. Build custom model only for unique form layouts."
+},
+{
+  id:"azurevision", cat:"azure", emoji:"👁️", tag:"azure", tagLabel:"Azure",
+  term:"Azure Vision API & Face API",
+  tagline:"Computer vision — analyze images, detect and verify faces",
+  chain:["Image Input","Azure Vision API","Object Detection","OCR","Face API","Verification"],
+  what:`Azure Computer Vision analyzes images (objects, OCR, captions). Face API detects, analyzes, and verifies human faces.`,
+  how:`<b>Face API:</b><br>
+— Detect: bounding boxes, head pose, attributes (blur, emotions)<br>
+— Verify: "Is face A the same person as face B?" → confidence score<br>
+— Identify: match face against PersonGroup`,
+  codeblock:`faces = client.detect(image_data, detection_model="detection_03",
+                   return_face_id=True)
+result = client.verify_face_to_face(
+    face_id_1=faces[0].face_id,
+    face_id_2=hr_record_face_id
+)
+print(f"Same person: {result.is_identical}, confidence: {result.confidence}")`,
+  example:`Your Vision AI for ID photo validation: Face API verifies photo matches HR record → auto-approve/flag → 70% manual effort reduction.`,
+  models:["detection_03","recognition_04"],
+  usecases:["ID photo validation","Access control","Quality assurance"],
+  keypoint:"Face verification = 1:1 (same person?). Face identification = 1:N (who is this?). Use verification for ID validation."
+},
+{
+  id:"cosmosdb", cat:"azure", emoji:"🌌", tag:"azure", tagLabel:"Azure",
+  term:"Azure Cosmos DB",
+  tagline:"Microsoft's globally distributed, multi-model NoSQL database",
+  chain:["Cosmos DB","Partitioning","Containers","Consistency Levels","Change Feed"],
+  what:`Cosmos DB is Azure's <strong>globally distributed NoSQL database</strong> supporting document, key-value, graph, and column-family models.`,
+  how:`<b>Key concepts:</b><br>
+<em>Partition key</em>: determines data distribution. Use high-cardinality key (userId).<br>
+<em>RU/s</em>: normalized throughput metric.<br>
+<em>Change Feed</em>: event stream → trigger Azure Functions → real-time processing.`,
+  codeblock:`container.upsert_item({
+    "id": expense_id,
+    "userId": user_id,          # partition key
+    "amount": 245.50,
+    "vendor": "Dell Technologies",
+    "extractedAt": datetime.utcnow().isoformat()
+})`,
+  example:`Your Employee Expense Management: Form Recognizer → Cosmos DB (partitioned by userId) → 30% processing time reduction.`,
+  models:["Core SQL API","MongoDB API","Change Feed → Azure Functions"],
+  usecases:["User activity data","Session state","Agent conversation history","Multi-tenant apps"],
+  keypoint:"Choose partition key carefully — even distribution = performance. For conversation history: partitionKey=sessionId."
+},
+{
+  id:"azfunctions", cat:"azure", emoji:"⚡", tag:"azure", tagLabel:"Azure",
+  term:"Azure Functions & Event-Driven Architecture",
+  tagline:"Serverless compute — trigger on events, scale to zero",
+  chain:["Trigger","Azure Function","Process","Output Binding","Result"],
+  what:`Azure Functions is <strong>serverless compute</strong> triggered by events (HTTP, queue message, blob upload, timer). Write business logic — Azure handles infrastructure.`,
+  how:`<b>AI-relevant triggers:</b><br>
+<em>Queue trigger</em>: async AI request processing<br>
+<em>Blob trigger</em>: auto-process uploaded PDFs<br>
+<em>Timer trigger</em>: scheduled KB re-indexing<br>
+<b>Bindings</b> connect to Cosmos DB, Service Bus, Blob — no boilerplate.`,
+  codeblock:`@app.queue_trigger(arg_name="msg", queue_name="ai-requests")
+@app.cosmos_db_output(arg_name="doc", database_name="AI_DB",
+                      container_name="Responses")
+def process_ai_request(msg: func.QueueMessage, doc: func.Out[dict]):
+    payload = json.loads(msg.get_body())
+    response = call_llm(payload["query"])
+    doc.set({"id": payload["id"], "response": response})`,
+  example:`Your Azure event-driven workflows: PDF upload → Blob trigger → Form Recognizer → Cosmos DB → streamlined 80% of processes.`,
+  models:["Python / C# / Node.js / Java"],
+  usecases:["Async AI processing","Document pipelines","Scheduled re-indexing"],
+  keypoint:"Functions + Queue = decouple AI from user requests. User gets instant 202 response. Heavy AI work happens async."
+},
+{
+  id:"aks", cat:"azure", emoji:"☸️", tag:"azure", tagLabel:"Azure",
+  term:"AKS — Azure Kubernetes Service",
+  tagline:"Managed Kubernetes on Azure — deploy containers at scale",
+  chain:["Docker Image","AKS Cluster","Pod","Service","Ingress","HPA"],
+  what:`AKS is <strong>managed Kubernetes on Azure</strong>. Deploy, scale, and update containerized AI microservices reliably.`,
+  how:`<b>Key K8s resources:</b><br>
+<em>Deployment</em>: manages N replicas, rolling updates.<br>
+<em>HPA</em>: auto-scale based on CPU or custom metrics.<br>
+<em>ConfigMaps/Secrets</em>: inject credentials as env vars.<br>
+<em>Ingress</em>: HTTP routing rules.`,
+  codeblock:`apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource: {name: cpu, target: {averageUtilization: 70}}`,
+  example:`Your AI microservices on AKS handling 100K+ daily requests. HPA scales pods under load. Rolling deployments ensure zero downtime.`,
+  models:["Azure Container Registry (ACR)","Azure Monitor for metrics"],
+  usecases:["Production AI serving","Multi-service AI systems","Zero-downtime updates"],
+  keypoint:"For AI on K8s: use KEDA (queue-based HPA) not CPU-based. LLM services are I/O bound — queue depth is a better scaling signal."
+},
+{
+  id:"azuresql", cat:"azure", emoji:"🗄️", tag:"azure", tagLabel:"Azure",
+  term:"Azure SQL & Databases",
+  tagline:"Relational and NoSQL for AI application state",
+  chain:["Azure SQL","Cosmos DB","Redis","Structured Data","Agent State"],
+  what:`Azure SQL = managed SQL Server. In AI systems, SQL stores structured operational data; NoSQL stores flexible agent state and document metadata.`,
+  how:`<b>When to use which:</b><br>
+<em>Azure SQL</em>: structured business data, reporting, ACID transactions<br>
+<em>Cosmos DB</em>: conversation history, agent state, high-scale writes<br>
+<em>Redis</em>: caching LLM responses, session state, rate limiting`,
+  example:`Your expense management system uses Cosmos DB (flexible schema, high writes). ServiceNow integration data in Azure SQL (structured, relational).`,
+  models:["Azure SQL MI","Cosmos DB Core API","Azure Database for PostgreSQL"],
+  usecases:["Agent conversation persistence","Eval datasets","Operational data","Audit logs"],
+  keypoint:"SQL for structured/relational data. Cosmos for high-write, flexible-schema data like agent state."
+},
+
+// ─── LLMOPS ───────────────────────────────────────────────────
+{
+  id:"llmops", cat:"ops", emoji:"📊", tag:"ops", tagLabel:"LLMOps",
+  term:"LLMOps",
+  tagline:"MLOps for LLMs — deploy, monitor, evaluate, improve",
+  chain:["LLMOps","Evaluation","Tracing","Feedback","Continuous Improvement"],
+  what:`LLMOps is the practice of <strong>operationalizing LLM-based applications</strong> — deployment, monitoring, evaluation, and continuous improvement.`,
+  how:`<b>Lifecycle:</b><br>
+1. Development: prompt engineering, RAG design, evals<br>
+2. CI/CD: automated eval on every PR<br>
+3. Deployment: blue-green / canary<br>
+4. Monitoring: latency, cost, accuracy, hallucination rate<br>
+5. Feedback loop: thumbs down → label → update prompts<br>
+6. Fine-tuning: periodic fine-tune cycle`,
+  example:`Your Observability & Feedback Evaluation System IS LLMOps: Phoenix tracing → LangSmith debugging → Azure AI Foundry Evaluators → 10% accuracy improvement.`,
+  models:["Phoenix (Arize AI)","LangSmith","Azure AI Foundry","W&B","MLflow"],
+  usecases:["Production AI quality","Prompt version control","Cost optimization","Compliance"],
+  keypoint:"LLMOps = MLOps + reality that LLMs change behavior based on prompt wording. Treat every prompt change as a code change."
+},
+{
+  id:"phoenix", cat:"ops", emoji:"🔥", tag:"ops", tagLabel:"LLMOps",
+  term:"Phoenix (Arize AI)",
+  tagline:"Open-source LLM observability — traces, spans, evals",
+  chain:["Phoenix","OpenInference","Traces","Spans","Evals","Datasets"],
+  what:`Phoenix is an <strong>open-source LLM observability platform</strong>. Captures full traces of LLM applications and runs evaluations for hallucination, relevance, and toxicity.`,
+  how:`<b>Auto-instrumentation:</b> One-line integration with LangChain, OpenAI.<br>
+<b>Trace structure:</b> Parent span (chain) → child spans (LLM, retriever, tools).<br>
+<b>Evaluations:</b> Hallucination, Relevance, Q&A Correctness.`,
+  codeblock:`import phoenix as px
+from openinference.instrumentation.langchain import LangChainInstrumentor
+
+px.launch_app()
+tracer_provider = register(project_name="rag-chatbot")
+LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
+# All LangChain calls auto-traced → localhost:6006`,
+  example:`Core of your Observability System. Phoenix traces every RAG call → identify low-quality retrievals → fix chunking/prompts → 10% accuracy improvement.`,
+  models:["LangChain, OpenAI, LlamaIndex, DSPy","Local or Arize cloud"],
+  usecases:["RAG debugging","Hallucination monitoring","Retrieval quality analysis"],
+  keypoint:"Phoenix = one import + one instrument call = full visibility into every LLM chain."
+},
+{
+  id:"foundreval", cat:"ops", emoji:"📐", tag:"ops", tagLabel:"LLMOps",
+  term:"Azure AI Foundry Evaluators",
+  tagline:"Microsoft's structured evaluation framework for AI agents",
+  chain:["Azure AI Foundry","Evaluators","Task Completion","Tool Accuracy","Groundedness"],
+  what:`Azure AI Foundry provides <strong>9 built-in evaluators</strong>: task completion, tool accuracy, groundedness, relevance, coherence, fluency, and safety.`,
+  how:`<b>Key evaluators:</b><br>
+<em>Task completion</em>: Did agent accomplish the goal?<br>
+<em>Tool accuracy</em>: Were right tools called with correct params?<br>
+<em>Groundedness</em>: Is response supported by context?`,
+  codeblock:`groundedness_eval = GroundednessEvaluator(
+    azure_ai_project={
+        "subscription_id": SUB_ID,
+        "resource_group_name": RG_NAME,
+        "project_name": PROJECT_NAME
+    },
+    credential=DefaultAzureCredential()
+)
+results = evaluate(data="eval.jsonl",
+                   evaluators={"groundedness": groundedness_eval})`,
+  example:`You built corrected Python samples using the v1.1.0b4 API. Used to evaluate multi-agent task completion and RAG chatbot groundedness.`,
+  models:["GPT-4 as LLM judge"],
+  usecases:["Agent quality measurement","Pre-production evaluation","CI/CD eval gate"],
+  keypoint:"Run groundedness evaluator on golden dataset on every deployment — drop in score = regression, don't deploy."
+},
+{
+  id:"hallucination", cat:"ops", emoji:"👻", tag:"ops", tagLabel:"LLMOps",
+  term:"Hallucination Detection & Prevention",
+  tagline:"When LLMs state false information confidently — and how to stop it",
+  chain:["Hallucination Types","RAG (prevention)","Eval (detection)","Confidence Threshold","HitL"],
+  what:`Hallucination = LLM generates <strong>fluent, confident-sounding text that is factually incorrect</strong>. Must be prevented architecturally and detected in monitoring.`,
+  how:`<b>Types:</b> Factual (wrong facts), Context (contradicts provided context), Citation (invents sources).<br>
+<b>Prevention:</b> RAG + "Answer ONLY using context" + confidence threshold.<br>
+<b>Detection:</b> Phoenix groundedness evaluator, NLI models, LLM judge.`,
+  example:`Your chatbot's confidence threshold: low Azure AI Search scores → "I don't know, routing to human" instead of hallucinating. Phoenix monitors when groundedness drops.`,
+  models:["GPT-4 as LLM judge","Vectara HHEM","NLI models"],
+  usecases:["All enterprise AI","Legal/medical/financial domains","Compliance audit trails"],
+  keypoint:"RAG alone doesn't eliminate hallucinations. Layer: RAG + grounding prompt + groundedness eval + confidence threshold + HitL."
+},
+
+// ─── INFRASTRUCTURE ───────────────────────────────────────────
+{
+  id:"docker", cat:"infra", emoji:"🐳", tag:"infra", tagLabel:"Infrastructure",
+  term:"Docker",
+  tagline:"Package your AI app + all dependencies into a portable container",
+  chain:["Dockerfile","Docker Image","Container","Registry (ACR)","Kubernetes"],
+  what:`Docker <strong>packages your application with all dependencies</strong> into a portable image. Same image runs identically on dev, CI, and production Kubernetes.`,
+  how:`<b>Key practices for AI:</b><br>
+— Pin dependency versions for reproducible builds<br>
+— Never bake secrets into image — use env vars<br>
+— Multi-stage build: smaller final image`,
+  codeblock:`FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ ./src/
+HEALTHCHECK CMD curl -f http://localhost:8000/health
+EXPOSE 8000
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]`,
+  example:`Your AI microservices on AKS packaged as Docker images. Stored in Azure Container Registry (ACR).`,
+  models:["Azure Container Registry (ACR)","Docker Hub"],
+  usecases:["AI service packaging","Reproducible environments","CI/CD deployment"],
+  keypoint:"Order Dockerfile instructions by change frequency. Dependencies rarely change → cache them. Code changes often → copy last."
+},
+{
+  id:"kubernetes", cat:"infra", emoji:"☸️", tag:"infra", tagLabel:"Infrastructure",
+  term:"Kubernetes (K8s)",
+  tagline:"Orchestrates containers at scale — AKS is managed K8s",
+  chain:["Docker Image","K8s Deployment","Pod","Service","HPA","AKS"],
+  what:`Kubernetes is the <strong>de facto container orchestration platform</strong>. AKS = Azure's managed K8s (control plane managed by Microsoft).`,
+  how:`<b>For AI workloads:</b><br>
+— Resource requests/limits for LLM serving pods<br>
+— HPA: auto-scale based on CPU or queue depth<br>
+— Rolling updates: zero-downtime deployments<br>
+— Secrets: inject Azure OpenAI credentials as env vars`,
+  codeblock:`# KEDA: scale on queue depth (better for AI than CPU)
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+spec:
+  triggers:
+  - type: azure-servicebus
+    metadata:
+      queueName: ai-requests
+      messageCount: "5"  # scale per 5 messages
+  minReplicaCount: 1
+  maxReplicaCount: 50`,
+  example:`Your AKS deployment handling 100K+ daily requests. HPA scales AI processor pods based on workload.`,
+  models:["AKS","KEDA for event-driven scaling","Helm charts"],
+  usecases:["High-scale AI APIs","Production reliability","Zero-downtime updates"],
+  keypoint:"Use KEDA (queue-based HPA) not CPU-based for AI workloads. LLM services are I/O bound — queue depth = better scaling signal."
+},
+{
+  id:"cicd", cat:"infra", emoji:"🔄", tag:"infra", tagLabel:"Infrastructure",
+  term:"CI/CD for AI",
+  tagline:"Automated testing, eval, and deployment pipeline for AI systems",
+  chain:["Code Commit","CI (Test + Eval)","CD (Deploy)","Monitor","Feedback"],
+  what:`CI/CD for AI extends traditional pipelines with <strong>automated LLM evaluation as a quality gate</strong> before deployment.`,
+  how:`<b>CI for AI:</b><br>
+1. Unit tests (tool functions, parsing)<br>
+2. Integration tests (end-to-end RAG)<br>
+3. LLM eval gate (golden dataset → block if groundedness < threshold)<br>
+4. Container build → push to ACR<br><br>
+<b>CD:</b> Staging → smoke tests → prod canary (10%) → full rollout`,
+  codeblock:`# GitHub Actions eval gate
+- name: Run LLM Eval
+  run: python scripts/run_evals.py --dataset golden_set.jsonl
+- name: Check Threshold
+  run: python scripts/check_threshold.py --min-groundedness 0.85
+- name: Block if eval fails
+  if: failure()
+  run: exit 1  # blocks deployment`,
+  example:`Your AKS deployments follow CI/CD. Automated eval gate prevents deploying regressions.`,
+  models:["GitHub Actions","Azure DevOps","Azure Container Registry"],
+  usecases:["Prompt change management","Safe model upgrades","Automated regression detection"],
+  keypoint:"Add LLM eval as CI gate — treat accuracy scores like code coverage. Below threshold = blocked deployment."
+},
+{
+  id:"mcp", cat:"infra", emoji:"🔌", tag:"infra", tagLabel:"MCP",
+  term:"MCP — Model Context Protocol",
+  tagline:"Anthropic's open standard for connecting LLMs to tools",
+  chain:["MCP Host","MCP Client","MCP Server","Tools","Resources","Prompts"],
+  what:`MCP is an <strong>open protocol by Anthropic for connecting AI models to external tools and data sources</strong>. Standardizes how LLMs interact with files, APIs, and databases.`,
+  how:`<b>Architecture:</b><br>
+<em>MCP Host</em>: AI app (Claude Desktop, your agent)<br>
+<em>MCP Server</em>: exposes tools, resources, prompts<br>
+<b>Primitives:</b> Tools (functions), Resources (data), Prompts (templates)<br>
+<b>Transport:</b> stdio (local) or SSE (remote HTTP)`,
+  codeblock:`from mcp.server import Server
+
+server = Server("my-tools")
+
+@server.tool()
+async def query_servicenow(ticket_id: str) -> str:
+    """Get ServiceNow ticket details"""
+    return json.dumps(sn_client.get_incident(ticket_id))`,
+  example:`You hold Anthropic's MCP certification. Claude Code uses MCP servers for GitHub integration in your incident response pipeline.`,
+  models:["Anthropic Claude","Any MCP-compatible host"],
+  usecases:["Connect Claude to internal tools","Standardized tool interfaces","Local file + API access from AI"],
+  keypoint:"MCP = standard way to give LLMs access to your tools. One server definition → works with any MCP-compatible host."
+},
+{
+  id:"claudecode", cat:"infra", emoji:"💻", tag:"infra", tagLabel:"MCP",
+  term:"Claude Code (CLI)",
+  tagline:"Anthropic's agentic coding tool — Claude in your terminal",
+  chain:["Claude Code","Bash Tool","File Edit","MCP Servers","Agentic Loops"],
+  what:`Claude Code is Anthropic's <strong>CLI tool for agentic software engineering</strong>. Reads your codebase, writes/edits files, runs bash commands, and uses MCP servers.`,
+  how:`<b>Capabilities:</b><br>
+— Read/write files in current directory<br>
+— Execute bash commands (test, build, run)<br>
+— Multi-step agentic loops<br>
+— MCP server integration<br><br>
+<b>CLAUDE.md</b>: project-level instructions file read at startup.`,
+  codeblock:`# .claude/CLAUDE.md
+# Project: NeuroSAN Multi-Agent System
+When adding new agents:
+1. Add HOCON config in agents/
+2. Create CodedTool class in tools/
+3. Add to tools/__init__.py (exact class name)
+4. Add startup validation test`,
+  example:`Listed in your Dev Tools skills. You use Claude Code for agentic coding on your NeuroSAN project. Anthropic Claude Code in Action certification shows you've mastered it.`,
+  models:["Claude Sonnet 4.5 (default)","Claude Opus 4.5 (--model flag)"],
+  usecases:["Complex refactoring","Multi-file features","Bug hunting","Test generation"],
+  keypoint:"Write a good CLAUDE.md — it's onboarding documentation for Claude. Include architecture, conventions, and gotchas."
+}
+
+]; // end TERMS
+
+// ─── RENDER ENGINE ─────────────────────────────────────────
+const CAT_COLORS = {
+  core:"tag-core", model:"tag-model", finetune:"tag-core",
+  rag:"tag-rag", vecdb:"tag-rag",
+  framework:"tag-framework", agent:"tag-agent",
+  azure:"tag-azure", ops:"tag-ops", infra:"tag-infra"
+};
+
+const CAT_LABELS = {
+  core:"Core AI", model:"Model", finetune:"Fine-tuning",
+  rag:"RAG", vecdb:"Vector DB",
+  framework:"Framework", agent:"Multi-Agent",
+  azure:"Azure", ops:"LLMOps", infra:"Infrastructure"
+};
+
+const CAT_SECTION_ORDER = [
+  {key:"core", label:"Core AI / ML Fundamentals"},
+  {key:"model", label:"Models"},
+  {key:"finetune", label:"Fine-tuning & Prompting"},
+  {key:"rag", label:"RAG & Retrieval"},
+  {key:"vecdb", label:"Vector Databases"},
+  {key:"framework", label:"Frameworks — LangChain Stack"},
+  {key:"agent", label:"Multi-Agent Systems"},
+  {key:"azure", label:"Azure Services"},
+  {key:"ops", label:"LLMOps & Evaluation"},
+  {key:"infra", label:"Infrastructure & Tools"},
+];
+
+let openSet = new Set();
+let currentCat = "all";
+let searchTerm = "";
+
+function buildCard(item, delay=0) {
+  const tagClass = CAT_COLORS[item.cat] || "tag-core";
+  const tagLabel = CAT_LABELS[item.cat] || item.cat;
+  const isOpen = openSet.has(item.id);
+
+  let chainHtml = "";
+  if (item.chain) {
+    chainHtml = `<div class="chain-wrap">` +
+      item.chain.map((c,i) =>
+        (i>0 ? `<span class="chain-arrow">→</span>` : "") +
+        `<span class="chain-item${i===0?' current':''}">${c}</span>`
+      ).join("") + `</div>`;
+  }
+
+  let modelsHtml = item.models?.length ? `<div class="body-block">
+    <div class="body-label">Models / Tools</div>
+    <div class="models-wrap">${item.models.map(m=>`<span class="model-pill">${m}</span>`).join("")}</div>
+  </div>` : "";
+
+  let usecaseHtml = item.usecases?.length ? `<div class="body-block">
+    <div class="body-label">Use Cases</div>
+    <ul class="usecase-list">${item.usecases.map(u=>`<li>${u}</li>`).join("")}</ul>
+  </div>` : "";
+
+  let codeHtml = item.codeblock ? `<div class="body-block">
+    <div class="body-label">Code / Pattern</div>
+    <div class="code-block">${item.codeblock}</div>
+  </div>` : "";
+
+  return `<div class="card${isOpen?' open':''}" id="card-${item.id}" style="animation-delay:${delay}s">
+    <div class="card-head" onclick="toggle('${item.id}')">
+      <div class="card-emoji">${item.emoji}</div>
+      <div class="card-title-wrap">
+        <div class="card-title">${item.term}</div>
+        <div class="card-tagline">${item.tagline}</div>
+      </div>
+      <div class="card-right"><span class="card-tag ${tagClass}">${tagLabel}</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      ${item.chain ? `<div class="body-block"><div class="body-label">Concept Chain</div>${chainHtml}</div>` : ""}
+      <div class="body-block"><div class="body-label">What It Is</div><div class="body-text">${item.what}</div></div>
+      <div class="body-block"><div class="body-label">How It Works</div><div class="body-text">${item.how}</div></div>
+      ${codeHtml}
+      <div class="body-block"><div class="body-label">From Your Resume</div>
+        <div class="example-box"><div class="ex-label">Your Example</div>${item.example}</div></div>
+      ${modelsHtml}${usecaseHtml}
+      ${item.keypoint ? `<div class="keypoint">${item.keypoint}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function getFiltered() {
+  return TERMS.filter(t => {
+    const matchCat = currentCat === "all" || t.cat === currentCat;
+    if (!searchTerm) return matchCat;
+    const q = searchTerm.toLowerCase();
+    return matchCat && (
+      t.term.toLowerCase().includes(q) ||
+      t.tagline.toLowerCase().includes(q) ||
+      t.what.toLowerCase().includes(q) ||
+      (t.keypoint||"").toLowerCase().includes(q) ||
+      (t.chain||[]).some(c=>c.toLowerCase().includes(q))
+    );
+  });
+}
+
+function render() {
+  const main = document.getElementById("mainContent");
+  const filtered = getFiltered();
+  document.getElementById("visibleCount").textContent = filtered.length;
+  document.getElementById("searchCount").textContent = filtered.length + " terms";
+  document.getElementById("noResults").style.display = filtered.length === 0 ? "block" : "none";
+  main.innerHTML = "";
+
+  if (currentCat !== "all") {
+    main.innerHTML = `<div class="cards-grid">${filtered.map((t,i)=>buildCard(t,i*0.03)).join("")}</div>`;
+    return;
+  }
+
+  CAT_SECTION_ORDER.forEach(sec => {
+    const items = filtered.filter(t => t.cat === sec.key);
+    if (!items.length) return;
+    const section = document.createElement("div");
+    section.innerHTML = `
+      <div class="section-header">
+        <div class="section-title">${sec.label}</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="cards-grid">${items.map((t,i)=>buildCard(t,i*0.03)).join("")}</div>
+    `;
+    main.appendChild(section);
+  });
+}
+
+function toggle(id) {
+  if (openSet.has(id)) openSet.delete(id);
+  else openSet.add(id);
+  render();
+  if (openSet.has(id)) {
+    setTimeout(() => {
+      const el = document.getElementById("card-"+id);
+      if (el) el.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }, 50);
+  }
+}
+
+document.getElementById("sidebar").addEventListener("click", e => {
+  const btn = e.target.closest(".cat-btn");
+  if (!btn) return;
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  currentCat = btn.dataset.cat;
+  openSet.clear();
+  render();
+});
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchTerm = e.target.value.trim();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
