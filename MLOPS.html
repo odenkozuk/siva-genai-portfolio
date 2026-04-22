@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #161d2e;
+    --border: #1e2d45;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --tag-bg: #1e2d45;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0d1b2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+  }
+  .logo span { color: var(--text); }
+  .stats {
+    display: flex;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .stats b { color: var(--accent); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+  .tab-btn[data-tab="mlops"].active { background: var(--accent3); border-color: var(--accent3); }
+  .tab-btn[data-tab="nlp"].active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .tab-btn[data-tab="dl"].active { background: var(--accent4); border-color: var(--accent4); color: #000; }
+
+  /* Layout */
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* Section */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-left: 4px;
+  }
+
+  /* Q&A Card */
+  .qa-grid { display: flex; flex-direction: column; gap: 14px; }
+  .qa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .qa-card:hover { border-color: #2a3f5f; }
+
+  .qa-question {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .q-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+  .q-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .q-tag {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+  .q-arrow {
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: transform 0.25s;
+    min-width: 16px;
+    padding-top: 2px;
+  }
+  .qa-card.open .q-arrow { transform: rotate(90deg); color: var(--accent); }
+
+  .qa-answer {
+    display: none;
+    padding: 0 20px 18px 62px;
+    font-size: 0.86rem;
+    line-height: 1.75;
+    color: #94a3b8;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .qa-card.open .qa-answer { display: block; }
+
+  .qa-answer strong { color: var(--accent); font-weight: 600; }
+  .qa-answer .ans-section { margin-top: 10px; }
+  .qa-answer .ans-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .qa-answer ul { padding-left: 18px; }
+  .qa-answer ul li { margin-bottom: 4px; }
+  .code-box {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #7dd3fc;
+    margin-top: 8px;
+    white-space: pre-wrap;
+  }
+
+  /* Difficulty badge */
+  .diff { font-size: 0.62rem; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-left: 6px; }
+  .diff.easy { background: #052e16; color: #4ade80; }
+  .diff.med { background: #431407; color: #fb923c; }
+  .diff.hard { background: #2d1b69; color: #a78bfa; }
+
+  /* NLP accent */
+  .section[data-id="nlp"] .qa-card.open { border-color: #4c1d95; }
+  .section[data-id="nlp"] .qa-card.open .q-arrow { color: #a78bfa; }
+  .section[data-id="nlp"] .qa-answer strong { color: #a78bfa; }
+
+  /* MLOps accent */
+  .section[data-id="mlops"] .qa-card.open { border-color: #064e3b; }
+  .section[data-id="mlops"] .qa-card.open .q-arrow { color: var(--accent3); }
+  .section[data-id="mlops"] .qa-answer strong { color: var(--accent3); }
+
+  /* DL accent */
+  .section[data-id="dl"] .qa-card.open { border-color: #451a03; }
+  .section[data-id="dl"] .qa-card.open .q-arrow { color: var(--accent4); }
+  .section[data-id="dl"] .qa-answer strong { color: var(--accent4); }
+
+  /* Search */
+  .search-wrap { margin-bottom: 20px; }
+  .search-input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px 10px 40px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.44 1.406a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 12px center;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  @media(max-width:600px) {
+    header { padding: 18px 16px 14px; }
+    main { padding: 20px 12px 50px; }
+    .qa-answer { padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">ML<span>Prep</span> <span style="color:var(--muted);font-size:0.75rem;font-weight:400">Interview Kit</span></div>
+    <div class="stats"><span><b>60+</b> Q&As</span><span><b>4</b> Topics</span><span><b>Tap</b> to expand</span></div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="ml">🤖 ML Algorithms</button>
+    <button class="tab-btn" data-tab="dl">🧠 Deep Learning</button>
+    <button class="tab-btn" data-tab="mlops">⚙️ MLOps</button>
+    <button class="tab-btn" data-tab="nlp">💬 NLP</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ========== ML ALGORITHMS ========== -->
+<div class="section active" data-id="ml" id="sec-ml">
+  <div class="section-title">// ML Algorithms · Basics · Use Cases</div>
+  <div class="search-wrap"><input class="search-input" placeholder="Search questions..." oninput="filterCards(this,'sec-ml')"></div>
+  <div class="qa-grid">
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">01</span><span class="q-text">What is the difference between Supervised, Unsupervised, and Reinforcement Learning?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>Supervised:</strong> Model learns from labeled data (input → output). Goal: predict output for new inputs.<br>
+        <strong>Unsupervised:</strong> No labels. Model finds patterns/clusters in data.<br>
+        <strong>Reinforcement:</strong> Agent learns via rewards/penalties through environment interaction.<br>
+        <div class="ans-section"><div class="ans-label">Examples</div>
+          <ul>
+            <li><strong>Supervised</strong> → Spam detection, house price prediction, fraud detection</li>
+            <li><strong>Unsupervised</strong> → Customer segmentation (K-Means), topic modeling (LDA)</li>
+            <li><strong>Reinforcement</strong> → AlphaGo, self-driving cars, ChatGPT RLHF fine-tuning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">02</span><span class="q-text">Explain Linear Regression. When would you use it?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Models relationship between a continuous target variable and one or more features by fitting a straight line: <strong>y = mx + b</strong>. Minimizes Mean Squared Error (MSE) via Ordinary Least Squares or Gradient Descent.<br>
+        <div class="ans-section"><div class="ans-label">Use When</div>
+          <ul>
+            <li>Target is continuous (not categorical)</li>
+            <li>Linear relationship between features and target</li>
+            <li>Interpretability matters (e.g., finance, economics)</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Real Examples</div>
+          Sales forecasting, predicting insurance premiums, house price estimation
+        </div>
+        <div class="ans-section"><div class="ans-label">Assumptions</div>
+          Linearity, No multicollinearity, Homoscedasticity, Normally distributed residuals
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">03</span><span class="q-text">What is Logistic Regression and how is it different from Linear Regression?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Logistic Regression is used for <strong>binary/multi-class classification</strong>. It applies the <strong>sigmoid function</strong> to output a probability [0,1].<br>
+        <div class="code-box">σ(z) = 1 / (1 + e^(-z))   → outputs P(class=1)</div>
+        <div class="ans-section"><div class="ans-label">Key Differences</div>
+          <ul>
+            <li>Linear Reg → continuous output; Logistic → probability → class label</li>
+            <li>Loss: Linear uses MSE; Logistic uses Binary Cross-Entropy</li>
+            <li>Linear uses OLS; Logistic uses MLE or Gradient Descent</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Email spam detection, disease diagnosis (cancer/no cancer), churn prediction
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">04</span><span class="q-text">What is a Decision Tree? Explain how it splits nodes.</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        A tree-like model that splits data based on feature thresholds to make predictions. Each internal node = a feature test; leaf = prediction.<br>
+        <div class="ans-section"><div class="ans-label">Split Criteria</div>
+          <ul>
+            <li><strong>Gini Impurity</strong> (used by CART) – measures how often a randomly chosen element would be misclassified</li>
+            <li><strong>Entropy / Information Gain</strong> – based on reduction in uncertainty (ID3, C4.5)</li>
+            <li><strong>MSE reduction</strong> – for regression trees</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Pros / Cons</div>
+          ✅ Interpretable, handles non-linear relationships, no scaling needed<br>
+          ❌ Prone to overfitting; unstable with small data changes
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Credit risk scoring, medical diagnosis rules, customer churn
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">05</span><span class="q-text">Random Forest vs Gradient Boosting — key differences?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Both are ensemble methods using decision trees.<br>
+        <div class="ans-section"><div class="ans-label">Random Forest (Bagging)</div>
+          <ul>
+            <li>Builds N trees <strong>in parallel</strong> on random data+feature subsets</li>
+            <li>Aggregates by majority vote / averaging</li>
+            <li>Reduces <strong>variance</strong> (overfitting)</li>
+            <li>Robust to noise, fast to train</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Gradient Boosting (Boosting)</div>
+          <ul>
+            <li>Builds trees <strong>sequentially</strong>; each corrects errors of previous</li>
+            <li>Minimizes loss via gradient descent on residuals</li>
+            <li>Reduces <strong>bias</strong>; higher accuracy but slower, prone to overfitting</li>
+            <li>Popular implementations: XGBoost, LightGBM, CatBoost</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">When to use</div>
+          RF → quick baseline, noisy data | GB → Kaggle competitions, tabular data where accuracy matters
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">06</span><span class="q-text">What is SVM? Explain kernel trick.</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>Support Vector Machine</strong> finds the optimal hyperplane that maximizes the margin between classes. Support vectors = data points closest to the hyperplane.<br>
+        <div class="ans-section"><div class="ans-label">Kernel Trick</div>
+          Maps data to higher-dimensional space without computing coordinates explicitly, making non-linearly separable data linearly separable.<br>
+          <ul>
+            <li><strong>Linear kernel</strong> – linearly separable data</li>
+            <li><strong>RBF (Radial Basis Function)</strong> – most common; good for non-linear boundaries</li>
+            <li><strong>Polynomial kernel</strong> – for polynomial decision boundaries</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Text classification (high-dim), image recognition, bioinformatics (gene classification)
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">07</span><span class="q-text">K-Means Clustering — how does it work?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Unsupervised algorithm that groups N data points into K clusters by minimizing intra-cluster variance (WCSS).<br>
+        <div class="ans-section"><div class="ans-label">Algorithm Steps</div>
+          <ol style="padding-left:18px">
+            <li>Initialize K centroids randomly (or K-Means++)</li>
+            <li>Assign each point to nearest centroid (Euclidean distance)</li>
+            <li>Recompute centroids as mean of cluster points</li>
+            <li>Repeat steps 2-3 until convergence</li>
+          </ol>
+        </div>
+        <div class="ans-section"><div class="ans-label">Choosing K</div>
+          <strong>Elbow Method</strong> – plot WCSS vs K, pick elbow point | <strong>Silhouette Score</strong> – measures cluster cohesion
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Customer segmentation, document clustering, anomaly detection, image compression
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">08</span><span class="q-text">What is overfitting and underfitting? How do you fix them?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>Overfitting:</strong> Model memorizes training data → high train accuracy, poor test accuracy. High variance.<br>
+        <strong>Underfitting:</strong> Model too simple → poor on both train and test. High bias.<br>
+        <div class="ans-section"><div class="ans-label">Fix Overfitting</div>
+          <ul>
+            <li>Regularization: L1 (Lasso), L2 (Ridge), Dropout (NN)</li>
+            <li>More training data, data augmentation</li>
+            <li>Cross-validation, early stopping</li>
+            <li>Reduce model complexity (fewer features, shallower tree)</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Fix Underfitting</div>
+          Add more features, increase model complexity, train longer, reduce regularization
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">09</span><span class="q-text">What are Precision, Recall, F1-Score and when to use which?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="code-box">Precision = TP / (TP + FP)   → "Of predicted positives, how many are correct?"
+Recall    = TP / (TP + FN)   → "Of actual positives, how many did we catch?"
+F1-Score  = 2 * (P * R) / (P + R)  → Harmonic mean</div>
+        <div class="ans-section"><div class="ans-label">When to prioritize</div>
+          <ul>
+            <li><strong>Precision</strong> → Spam detection (don't want legit mail in spam), fraud alerts (reduce false alarms)</li>
+            <li><strong>Recall</strong> → Cancer detection (don't miss actual cases), safety-critical systems</li>
+            <li><strong>F1</strong> → Imbalanced datasets where both matter (NER, document classification)</li>
+            <li><strong>AUC-ROC</strong> → When you need threshold-independent performance measure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">10</span><span class="q-text">Explain Bias-Variance Tradeoff</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="code-box">Total Error = Bias² + Variance + Irreducible Noise</div>
+        <strong>Bias</strong> = Error from wrong assumptions (underfitting). Simple model → high bias.<br>
+        <strong>Variance</strong> = Error from sensitivity to training data (overfitting). Complex model → high variance.<br>
+        <div class="ans-section"><div class="ans-label">Tradeoff</div>
+          Increasing model complexity reduces bias but increases variance. Goal: find the sweet spot.<br>
+          Ensemble methods (Bagging ↓ variance, Boosting ↓ bias) help manage this tradeoff.
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">11</span><span class="q-text">What is cross-validation? Types?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Technique to evaluate model generalization by partitioning data into train/validation splits multiple times.<br>
+        <div class="ans-section"><div class="ans-label">Types</div>
+          <ul>
+            <li><strong>K-Fold CV</strong> – Split into K folds; train on K-1, validate on 1, rotate. Most common.</li>
+            <li><strong>Stratified K-Fold</strong> – Preserves class distribution per fold. Use for imbalanced data.</li>
+            <li><strong>LOOCV</strong> – Leave-One-Out; K = N. Computationally expensive.</li>
+            <li><strong>Time-Series Split</strong> – Forward-chaining to prevent data leakage in temporal data.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">12</span><span class="q-text">What is PCA and why is it used?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>Principal Component Analysis</strong> is a dimensionality reduction technique. It transforms features into a new set of orthogonal axes (principal components) ordered by variance explained.<br>
+        <div class="ans-section"><div class="ans-label">Steps</div>
+          Standardize → Compute covariance matrix → Eigen decomposition → Select top K eigenvectors → Project data
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          <ul>
+            <li>Reduce dimensionality before ML (speeds up training)</li>
+            <li>Remove multicollinearity</li>
+            <li>Visualize high-dimensional data (2D/3D plot)</li>
+            <li>Facial recognition (Eigenfaces)</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Limitation</div>
+          Components are linear combinations → hard to interpret | Not suitable when variance ≠ importance
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">13</span><span class="q-text">What is feature engineering? Common techniques?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Process of using domain knowledge to create, transform, or select features that improve model performance.<br>
+        <div class="ans-section"><div class="ans-label">Techniques</div>
+          <ul>
+            <li><strong>Encoding</strong> – One-hot, Label, Target encoding for categoricals</li>
+            <li><strong>Scaling</strong> – StandardScaler (z-score), MinMaxScaler, RobustScaler</li>
+            <li><strong>Binning</strong> – Age groups, income brackets</li>
+            <li><strong>Interaction features</strong> – Multiply two features (area = length × width)</li>
+            <li><strong>Date/time features</strong> – Day of week, hour, is_weekend</li>
+            <li><strong>Handling missing values</strong> – Mean/median imputation, KNN impute, indicator flag</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">14</span><span class="q-text">Explain L1 vs L2 Regularization</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Both add a penalty term to the loss function to prevent overfitting by constraining model weights.<br>
+        <div class="code-box">L1 (Lasso):  Loss + λ * Σ|wᵢ|        → Sparse weights (some = 0)
+L2 (Ridge):  Loss + λ * Σwᵢ²        → Small weights but rarely zero
+ElasticNet:  Combination of L1 + L2</div>
+        <div class="ans-section"><div class="ans-label">When to use</div>
+          <ul>
+            <li><strong>L1</strong> – Feature selection built-in; when many irrelevant features exist</li>
+            <li><strong>L2</strong> – When all features matter; correlated features</li>
+            <li><strong>ElasticNet</strong> – Large datasets with correlated features</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">15</span><span class="q-text">What is the difference between Bagging and Boosting?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Both combine multiple weak learners but differ in approach:<br>
+        <div class="ans-section"><div class="ans-label">Bagging (Bootstrap Aggregating)</div>
+          Parallel training on random subsets → reduces <strong>variance</strong>. Example: Random Forest
+        </div>
+        <div class="ans-section"><div class="ans-label">Boosting</div>
+          Sequential training, each model fixes errors of previous → reduces <strong>bias</strong>. Examples: XGBoost, AdaBoost, LightGBM
+        </div>
+        <div class="ans-section"><div class="ans-label">Stacking</div>
+          Train diverse models, use a meta-learner on their predictions. Best for competitions.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== DEEP LEARNING ========== -->
+<div class="section" data-id="dl" id="sec-dl">
+  <div class="section-title">// Deep Learning · Neural Networks · Architectures</div>
+  <div class="search-wrap"><input class="search-input" placeholder="Search questions..." oninput="filterCards(this,'sec-dl')"></div>
+  <div class="qa-grid">
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">01</span><span class="q-text">How does backpropagation work?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Algorithm to compute gradients of loss w.r.t. each weight using the chain rule, then update weights via gradient descent.<br>
+        <div class="ans-section"><div class="ans-label">Steps</div>
+          <ol style="padding-left:18px">
+            <li><strong>Forward pass</strong> – compute predictions and loss</li>
+            <li><strong>Backward pass</strong> – propagate gradients layer by layer using chain rule</li>
+            <li><strong>Weight update</strong> – w = w - α * ∂L/∂w</li>
+          </ol>
+        </div>
+        <div class="ans-section"><div class="ans-label">Vanishing Gradient Problem</div>
+          Gradients shrink exponentially in deep networks with sigmoid/tanh. Fix: ReLU, batch norm, skip connections (ResNet), LSTM gates
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">02</span><span class="q-text">ReLU vs Sigmoid vs Tanh — when to use?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="code-box">Sigmoid: σ(x) = 1/(1+e^-x)  → [0,1]    | Binary output layer
+Tanh:    tanh(x)             → [-1,1]   | RNNs, hidden layers (zero-centered)
+ReLU:    max(0, x)           → [0,∞)    | Default hidden layer activation (faster)
+LeakyReLU: max(0.01x, x)    → fixes dying ReLU
+GELU/Swish → used in Transformers (BERT, GPT)</div>
+        <div class="ans-section"><div class="ans-label">Dying ReLU</div>
+          Neurons outputting 0 for all inputs → no gradient → stuck. Fix: LeakyReLU, ELU, or lower learning rate
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">03</span><span class="q-text">What is Batch Normalization and why use it?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Normalizes layer inputs to zero mean and unit variance per mini-batch during training. Adds learnable γ (scale) and β (shift).<br>
+        <div class="ans-section"><div class="ans-label">Benefits</div>
+          <ul>
+            <li>Reduces internal covariate shift → faster convergence</li>
+            <li>Acts as regularizer (reduces need for Dropout)</li>
+            <li>Allows higher learning rates</li>
+            <li>Reduces sensitivity to weight initialization</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Alternatives</div>
+          Layer Norm (used in Transformers, NLP) | Instance Norm (style transfer) | Group Norm
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">04</span><span class="q-text">CNN Architecture — how do convolutions work?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Convolutional layers apply learned filters (kernels) across the input to detect local patterns (edges, textures, shapes).<br>
+        <div class="ans-section"><div class="ans-label">Key Operations</div>
+          <ul>
+            <li><strong>Conv Layer</strong> – Feature extraction via dot product of filter + input patch</li>
+            <li><strong>Pooling</strong> – Spatial downsampling (MaxPool, AvgPool)</li>
+            <li><strong>Padding</strong> – SAME (preserve size) | VALID (shrinks)</li>
+            <li><strong>Stride</strong> – Controls step size of filter movement</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Famous Architectures</div>
+          LeNet → AlexNet → VGG → ResNet (skip connections) → EfficientNet → ViT
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Image classification, object detection (YOLO), segmentation, OCR
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">05</span><span class="q-text">What are RNNs, LSTMs, and GRUs?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>RNN:</strong> Processes sequences by maintaining hidden state. Suffers from vanishing gradients on long sequences.<br>
+        <strong>LSTM:</strong> Adds cell state + 3 gates (input, forget, output) to control information flow over long sequences.<br>
+        <strong>GRU:</strong> Simplified LSTM with 2 gates (reset, update). Fewer params, similar performance.<br>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Time-series forecasting, text generation, speech recognition, machine translation (pre-Transformer era)
+        </div>
+        <div class="ans-section"><div class="ans-label">Why Transformers replaced them</div>
+          Sequential processing → slow; Transformers parallelize with attention, handle longer contexts better
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">06</span><span class="q-text">Optimizers: SGD vs Adam vs RMSProp</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="ans-section"><div class="ans-label">SGD (Stochastic Gradient Descent)</div>
+          Updates weights per mini-batch. Simple, generalizes well, but slow convergence, sensitive to LR.
+        </div>
+        <div class="ans-section"><div class="ans-label">Adam (Adaptive Moment Estimation)</div>
+          Combines momentum + RMSProp. Maintains per-parameter LR. Fast convergence, default choice for most tasks.
+        </div>
+        <div class="ans-section"><div class="ans-label">RMSProp</div>
+          Adapts LR per parameter using moving average of squared gradients. Good for RNNs.
+        </div>
+        <div class="ans-section"><div class="ans-label">When to use</div>
+          Adam → default | SGD + momentum → CV tasks (often better final accuracy) | AdamW → LLM fine-tuning (decoupled weight decay)
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== MLOPS ========== -->
+<div class="section" data-id="mlops" id="sec-mlops">
+  <div class="section-title">// MLOps · Deployment · Monitoring · Pipelines</div>
+  <div class="search-wrap"><input class="search-input" placeholder="Search questions..." oninput="filterCards(this,'sec-mlops')"></div>
+  <div class="qa-grid">
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">01</span><span class="q-text">What is MLOps and why does it matter?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>MLOps</strong> (ML + DevOps) is a set of practices to reliably deploy, monitor, and maintain ML models in production at scale. Bridges the gap between data scientists and operations.<br>
+        <div class="ans-section"><div class="ans-label">Core Pillars</div>
+          <ul>
+            <li>Data versioning & pipeline automation</li>
+            <li>Model versioning, experiment tracking</li>
+            <li>CI/CD for ML (model testing, validation gates)</li>
+            <li>Model serving (REST APIs, batch inference)</li>
+            <li>Monitoring (data drift, model drift, latency)</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Tools</div>
+          MLflow, DVC, Kubeflow, Vertex AI, Azure ML, SageMaker, Weights & Biases, Evidently AI
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">02</span><span class="q-text">What is model drift? Types and how to detect?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Degradation in model performance over time due to changes in real-world data patterns.<br>
+        <div class="ans-section"><div class="ans-label">Types</div>
+          <ul>
+            <li><strong>Data Drift (Covariate Shift)</strong> – Input feature distribution changes. P(X) changes, P(Y|X) same. Example: User demographics shift.</li>
+            <li><strong>Concept Drift</strong> – Relationship between input and output changes. P(Y|X) changes. Example: Fraud patterns evolve.</li>
+            <li><strong>Label Drift</strong> – Target variable distribution changes.</li>
+            <li><strong>Prediction Drift</strong> – Model output distribution shifts.</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Detection Methods</div>
+          PSI (Population Stability Index), KS-Test, Chi-Squared test, Evidently AI, custom statistical tests
+        </div>
+        <div class="ans-section"><div class="ans-label">Response</div>
+          Retrain model, update feature pipeline, add new data sources, trigger alerts
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">03</span><span class="q-text">Explain ML Pipeline stages</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="code-box">Data Ingestion → Data Validation → Data Preprocessing → Feature Engineering
+→ Model Training → Model Evaluation → Model Registry → Deployment → Monitoring</div>
+        <div class="ans-section"><div class="ans-label">Key Concepts</div>
+          <ul>
+            <li><strong>Data Versioning</strong> – DVC, Delta Lake; track dataset changes</li>
+            <li><strong>Experiment Tracking</strong> – MLflow, W&B; log params, metrics, artifacts</li>
+            <li><strong>Model Registry</strong> – Centralized store with versioning and staging (Staging → Production)</li>
+            <li><strong>Feature Store</strong> – Reusable, consistent features for train & serve (Feast, Tecton)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">04</span><span class="q-text">Model deployment strategies — Blue/Green, Canary, Shadow</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><strong>Blue/Green</strong> – Run old (blue) and new (green) models simultaneously. Switch 100% traffic at once. Easy rollback.</li>
+          <li><strong>Canary</strong> – Gradually shift traffic (5% → 25% → 100%) to new model. Monitor each stage.</li>
+          <li><strong>Shadow/Dark Launch</strong> – New model receives real traffic but responses are discarded. Compare outputs silently without impacting users.</li>
+          <li><strong>A/B Testing</strong> – Split traffic between models; measure business metrics (CTR, conversion).</li>
+          <li><strong>Multi-armed Bandit</strong> – Dynamic traffic allocation based on real-time performance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">05</span><span class="q-text">What is data leakage and how to prevent it?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Occurs when information from outside the training set (future data or target info) leaks into the model, causing inflated performance metrics that don't generalize.<br>
+        <div class="ans-section"><div class="ans-label">Common Sources</div>
+          <ul>
+            <li>Scaling/normalization computed on full dataset before split</li>
+            <li>Feature derived from target (e.g., including label in features)</li>
+            <li>Time-series: using future data to predict past</li>
+            <li>Duplicate rows split across train/test</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Prevention</div>
+          Always split data FIRST, then fit transformers only on train set. Use pipelines (sklearn Pipeline). Careful temporal splitting for time-series.
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">06</span><span class="q-text">What is model explainability? SHAP vs LIME?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <strong>XAI (Explainable AI)</strong> – Techniques to understand why a model made a prediction.<br>
+        <div class="ans-section"><div class="ans-label">SHAP (SHapley Additive exPlanations)</div>
+          Based on game theory Shapley values. Assigns each feature a contribution to the prediction. <strong>Consistent and globally accurate.</strong> Supports summary plots, waterfall plots, beeswarm plots.
+        </div>
+        <div class="ans-section"><div class="ans-label">LIME (Local Interpretable Model-agnostic Explanations)</div>
+          Creates a local linear approximation around a prediction. <strong>Faster but less stable</strong>; explanations can vary with different random seeds.
+        </div>
+        <div class="ans-section"><div class="ans-label">Other Tools</div>
+          Integrated Gradients (DL), Attention visualization (Transformers), Partial Dependence Plots
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">07</span><span class="q-text">What is CI/CD for ML? How is it different from software CI/CD?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        In addition to code, ML CI/CD must also version and test <strong>data + models</strong>.<br>
+        <div class="ans-section"><div class="ans-label">ML CI/CD Pipeline</div>
+          <ul>
+            <li><strong>CI</strong> – Data validation tests, unit tests for feature transforms, model training on sample data, metric threshold gates</li>
+            <li><strong>CD</strong> – Auto-deploy model if metrics pass, canary rollout, rollback on regression</li>
+            <li><strong>CT (Continuous Training)</strong> – Retrain trigger on data drift or schedule; unique to ML</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Tools</div>
+          GitHub Actions + MLflow | Azure DevOps + Azure ML | Kubeflow Pipelines | SageMaker Pipelines
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">08</span><span class="q-text">Batch inference vs Real-time (online) inference</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="ans-section"><div class="ans-label">Batch Inference</div>
+          Run predictions on large datasets periodically (daily, weekly). Cheaper, scalable. Examples: Churn prediction overnight, product recommendation refresh.
+        </div>
+        <div class="ans-section"><div class="ans-label">Real-time Inference</div>
+          Low-latency predictions per request (ms). Deployed as REST API (FastAPI, Flask, TorchServe). Examples: Fraud detection at transaction time, chatbots, recommendation on page load.
+        </div>
+        <div class="ans-section"><div class="ans-label">Tradeoffs</div>
+          Batch → cost-efficient, stale predictions | Real-time → fresh, costly, needs infra (load balancer, auto-scaling)
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== NLP ========== -->
+<div class="section" data-id="nlp" id="sec-nlp">
+  <div class="section-title">// NLP Basics · Models · Use Cases</div>
+  <div class="search-wrap"><input class="search-input" placeholder="Search questions..." oninput="filterCards(this,'sec-nlp')"></div>
+  <div class="qa-grid">
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">01</span><span class="q-text">What is tokenization? Types?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Process of breaking text into smaller units (tokens) for processing.<br>
+        <div class="ans-section"><div class="ans-label">Types</div>
+          <ul>
+            <li><strong>Word tokenization</strong> – Split by whitespace/punctuation. Simple but large vocab, OOV problem.</li>
+            <li><strong>Subword tokenization</strong> – BPE (GPT), WordPiece (BERT), SentencePiece (T5). Handles OOV, widely used in LLMs.</li>
+            <li><strong>Character tokenization</strong> – Each char is a token. Small vocab but long sequences.</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">BPE (Byte-Pair Encoding)</div>
+          Iteratively merges most frequent character pairs. "unhappiness" → ["un", "happy", "ness"]. Used by GPT-2/3/4.
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">02</span><span class="q-text">TF-IDF vs Word2Vec vs BERT embeddings</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="ans-section"><div class="ans-label">TF-IDF (Term Frequency – Inverse Document Frequency)</div>
+          Sparse vector; word importance = frequency in doc × rarity in corpus. No semantics. Good for keyword-based search, BM25.
+        </div>
+        <div class="ans-section"><div class="ans-label">Word2Vec (2013)</div>
+          Dense 300-dim vectors via CBOW/Skip-gram. Captures semantic similarity. Static embeddings (same vector regardless of context). "bank" (river) = "bank" (finance).
+        </div>
+        <div class="ans-section"><div class="ans-label">BERT Embeddings (Contextual)</div>
+          Transformer-based. Each word gets a different embedding based on full sentence context. "bank" is disambiguated. State-of-the-art for downstream NLP tasks.
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          TF-IDF → IR, document retrieval | Word2Vec → similarity, clustering | BERT → QA, NER, classification, RAG
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">03</span><span class="q-text">Explain the Transformer architecture (Attention Is All You Need)</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff hard">Hard</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Introduced in 2017 by Vaswani et al. Replaced RNNs as the dominant architecture for NLP.<br>
+        <div class="ans-section"><div class="ans-label">Key Components</div>
+          <ul>
+            <li><strong>Multi-Head Self-Attention</strong> – Each token attends to all others; captures long-range dependencies. Multiple heads capture different relationships.</li>
+            <li><strong>Positional Encoding</strong> – Sine/cosine vectors added to embeddings since Transformer has no inherent order.</li>
+            <li><strong>Feed-Forward Network</strong> – Two linear layers per position (independent).</li>
+            <li><strong>Encoder-Decoder</strong> – Encoder (BERT) processes input; Decoder (GPT) generates output autoregressively.</li>
+            <li><strong>Layer Norm + Residual connections</strong> – Stabilize training.</li>
+          </ul>
+        </div>
+        <div class="code-box">Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V</div>
+        <div class="ans-section"><div class="ans-label">Variants</div>
+          Encoder-only: BERT (classification, NER) | Decoder-only: GPT (generation) | Encoder-Decoder: T5, BART (translation, summarization)
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">04</span><span class="q-text">What is BERT? How does it differ from GPT?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="ans-section"><div class="ans-label">BERT (Bidirectional Encoder Representations from Transformers)</div>
+          <ul>
+            <li>Encoder-only Transformer. Pre-trained on MLM (Masked Language Modeling) + NSP.</li>
+            <li>Bidirectional: sees full context (left + right).</li>
+            <li>Best for: Classification, NER, QA (extractive), sentence similarity.</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">GPT (Generative Pre-trained Transformer)</div>
+          <ul>
+            <li>Decoder-only Transformer. Pre-trained on CLM (Causal/Autoregressive language modeling).</li>
+            <li>Unidirectional: only sees past tokens.</li>
+            <li>Best for: Text generation, summarization, code generation, chat.</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          BERT → sentiment analysis, document classification, search ranking | GPT → chatbots, copilots, content generation
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">05</span><span class="q-text">What is RAG (Retrieval-Augmented Generation)?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Architecture that combines a <strong>vector retrieval system</strong> with an <strong>LLM</strong> to generate grounded, up-to-date answers without retraining.<br>
+        <div class="ans-section"><div class="ans-label">Pipeline</div>
+          <div class="code-box">User Query → Embed query → Vector Search (FAISS/Pinecone/Weaviate)
+→ Retrieve top-K chunks → Inject into LLM prompt → Generate answer</div>
+        </div>
+        <div class="ans-section"><div class="ans-label">Why RAG over Fine-tuning?</div>
+          <ul>
+            <li>No expensive retraining; knowledge updated by updating vector DB</li>
+            <li>Reduces hallucination by grounding in retrieved context</li>
+            <li>Supports real-time or private knowledge bases</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Enterprise knowledge chatbots, legal document Q&A, internal IT helpdesk, customer support
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">06</span><span class="q-text">What is fine-tuning? LoRA / PEFT?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff hard">Hard</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Fine-tuning adapts a pre-trained LLM to a specific task/domain by continuing training on task-specific labeled data.<br>
+        <div class="ans-section"><div class="ans-label">Full Fine-Tuning</div>
+          Update all weights. Expensive (needs GPUs), risk of catastrophic forgetting.
+        </div>
+        <div class="ans-section"><div class="ans-label">LoRA (Low-Rank Adaptation) — PEFT</div>
+          Freezes base model. Adds small trainable low-rank weight matrices (ΔW = A × B) to attention layers. Reduces trainable params by ~1000x.<br>
+          Used in QLoRA (quantized), PEFT library (HuggingFace).
+        </div>
+        <div class="ans-section"><div class="ans-label">Other PEFT Methods</div>
+          Prefix Tuning, Prompt Tuning, Adapter layers, IA³
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Domain-specific chatbots, code assistants, medical/legal LLMs, custom tone/style
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">07</span><span class="q-text">Named Entity Recognition (NER) — how does it work?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Sequence labeling task: classify each token into entity categories (PERSON, ORG, LOC, DATE, etc.).<br>
+        <div class="ans-section"><div class="ans-label">Approaches</div>
+          <ul>
+            <li><strong>Rule-based</strong> – Regex, dictionaries. Fast but brittle.</li>
+            <li><strong>CRF (Conditional Random Field)</strong> – Classic ML approach; models label dependencies.</li>
+            <li><strong>BiLSTM-CRF</strong> – Deep learning with sequential context.</li>
+            <li><strong>Transformer-based</strong> – BERT + token classification head. State of the art. spaCy transformer models.</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Labeling Scheme</div>
+          BIO tagging: B-ORG (Beginning), I-ORG (Inside), O (Outside)
+        </div>
+        <div class="ans-section"><div class="ans-label">Use Cases</div>
+          Resume parsing, invoice extraction, news indexing, medical record analysis
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">08</span><span class="q-text">What is Prompt Engineering? Key techniques?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        Craft of designing inputs to LLMs to elicit desired outputs without changing model weights.<br>
+        <div class="ans-section"><div class="ans-label">Key Techniques</div>
+          <ul>
+            <li><strong>Zero-shot</strong> – No examples; rely on model's pre-training knowledge</li>
+            <li><strong>Few-shot</strong> – Include 2-5 input-output examples in prompt</li>
+            <li><strong>Chain-of-Thought (CoT)</strong> – "Let's think step by step" → improves reasoning</li>
+            <li><strong>Self-consistency</strong> – Generate multiple CoT paths, majority vote</li>
+            <li><strong>ReAct</strong> – Reasoning + Acting; model reasons and takes tool actions</li>
+            <li><strong>Structured output prompting</strong> – Ask for JSON/XML format</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">System Prompt Best Practices</div>
+          Define role clearly | Specify output format | Add constraints and examples | Use delimiters (XML tags, ```)
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">09</span><span class="q-text">What are Hallucinations in LLMs? How to mitigate?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff med">Medium</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        LLMs generate plausible-sounding but factually incorrect or unsupported content.<br>
+        <div class="ans-section"><div class="ans-label">Types</div>
+          <ul>
+            <li><strong>Intrinsic</strong> – Contradicts source material</li>
+            <li><strong>Extrinsic</strong> – Cannot be verified from source</li>
+          </ul>
+        </div>
+        <div class="ans-section"><div class="ans-label">Mitigation Strategies</div>
+          <ul>
+            <li><strong>RAG</strong> – Ground output in retrieved factual documents</li>
+            <li><strong>RLHF</strong> – Align model with human preference feedback</li>
+            <li><strong>Self-consistency</strong> – Sample multiple responses, pick consistent one</li>
+            <li><strong>Constrained decoding</strong> – Limit vocabulary/output format</li>
+            <li><strong>Fact verification layer</strong> – Post-process with fact-checker model</li>
+            <li><strong>Temperature = 0</strong> – For deterministic factual tasks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-question" onclick="toggle(this)">
+        <div class="q-left"><span class="q-num">10</span><span class="q-text">What is semantic search vs keyword search?</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="diff easy">Easy</span><span class="q-arrow">▶</span></div>
+      </div>
+      <div class="qa-answer">
+        <div class="ans-section"><div class="ans-label">Keyword Search (BM25, TF-IDF)</div>
+          Matches exact words. Fast, interpretable but misses synonyms and intent. "car" ≠ "automobile".
+        </div>
+        <div class="ans-section"><div class="ans-label">Semantic Search (Dense Retrieval)</div>
+          Embeds query and documents into vector space, finds nearest neighbors by cosine similarity. Understands meaning not just keywords.
+        </div>
+        <div class="ans-section"><div class="ans-label">Hybrid Search</div>
+          Combines both (RRF – Reciprocal Rank Fusion). Best of both worlds. Used in production RAG systems.
+        </div>
+        <div class="ans-section"><div class="ans-label">Embedding Models</div>
+          text-embedding-ada-002 (OpenAI), BAAI/bge, E5, Cohere Embed, sentence-transformers
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('sec-' + tab).classList.add('active');
+    });
+  });
+
+  // Toggle Q&A
+  function toggle(el) {
+    const card = el.closest('.qa-card');
+    card.classList.toggle('open');
+  }
+
+  // Search/filter
+  function filterCards(input, sectionId) {
+    const val = input.value.toLowerCase();
+    const section = document.getElementById(sectionId);
+    section.querySelectorAll('.qa-card').forEach(card => {
+      const text = card.querySelector('.q-text').textContent.toLowerCase();
+      card.style.display = text.includes(val) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
