@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering — Interview Q&A Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,600&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-2: #0f0f12;
+    --surface: #15151a;
+    --surface-2: #1c1c22;
+    --surface-3: #232329;
+    --border: #2a2a32;
+    --border-2: #3a3a42;
+    --text: #ecebe3;
+    --text-2: #c5c2b8;
+    --muted: #7c7870;
+    --accent: #e0a956;
+    --accent-soft: rgba(224, 169, 86, 0.12);
+    --accent-dim: #8a6634;
+    --sage: #78a288;
+    --sage-soft: rgba(120, 162, 136, 0.15);
+    --red-soft: rgba(204, 102, 102, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(224, 169, 86, 0.06), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(120, 162, 136, 0.04), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ───── Sidebar ───── */
+  aside {
+    border-right: 1px solid var(--border);
+    padding: 36px 24px 48px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  }
+
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .brand em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 28px;
+  }
+
+  .stats {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .stats-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .stats-value {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--surface-3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--sage));
+    transition: width 0.4s ease;
+  }
+
+  nav ul { list-style: none; }
+
+  nav li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    color: var(--text-2);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+    position: relative;
+  }
+
+  nav li a:hover {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  nav li a.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  nav li a .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface-2);
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+
+  nav li a.active .num {
+    color: var(--accent);
+    background: rgba(224, 169, 86, 0.15);
+  }
+
+  .sidebar-footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.7;
+  }
+
+  .sidebar-footer button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.15s;
+  }
+
+  .sidebar-footer button:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+
+  /* ───── Main ───── */
+  main {
+    padding: 48px 56px 120px;
+    max-width: 900px;
+  }
+
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .tag-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--text-2);
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+
+  .search-box {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.15s;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent-dim);
+    background: var(--surface-2);
+  }
+
+  .search-box::before {
+    content: "⌕";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  /* ───── Topic section ───── */
+  .topic {
+    margin-bottom: 64px;
+    scroll-margin-top: 40px;
+  }
+
+  .topic-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topic-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .topic-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+
+  .topic-progress {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .topic-progress b {
+    color: var(--sage);
+    font-weight: 600;
+  }
+
+  .topic-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+
+  /* ───── Q&A Cards ───── */
+  .qa-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .qa-card:hover {
+    border-color: var(--border-2);
+  }
+
+  .qa-card.open {
+    background: var(--surface-2);
+    border-color: var(--accent-dim);
+  }
+
+  .qa-card.studied {
+    border-left: 3px solid var(--sage);
+  }
+
+  .qa-question {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .qa-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding-top: 3px;
+    min-width: 28px;
+    letter-spacing: 0.05em;
+  }
+
+  .qa-card.open .qa-num {
+    color: var(--accent);
+  }
+
+  .qa-text {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .qa-toggle {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.2s, color 0.15s;
+  }
+
+  .qa-card.open .qa-toggle {
+    transform: rotate(45deg);
+    color: var(--accent);
+  }
+
+  .qa-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .qa-card.open .qa-answer {
+    max-height: 600px;
+  }
+
+  .qa-answer-inner {
+    padding: 0 20px 18px 62px;
+    color: var(--text-2);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  .qa-answer-inner code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--surface-3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  .qa-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 16px 62px;
+  }
+
+  .qa-card:not(.open) .qa-actions { display: none; }
+
+  .qa-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .qa-chip:hover {
+    color: var(--text);
+    border-color: var(--border-2);
+  }
+
+  .qa-chip.active {
+    color: var(--sage);
+    border-color: var(--sage);
+    background: var(--sage-soft);
+  }
+
+  .no-results {
+    padding: 40px;
+    text-align: center;
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+
+  mark {
+    background: rgba(224, 169, 86, 0.25);
+    color: var(--accent);
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  /* ───── Scrollbar ───── */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-2); }
+
+  /* ───── Responsive ───── */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside {
+      position: relative;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    main { padding: 32px 20px 80px; }
+    h1 { font-size: 38px; }
+    .topic-title { font-size: 26px; }
+    .qa-answer-inner, .qa-actions { padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <aside>
+    <div class="brand">AI Eng <em>Prep</em></div>
+    <div class="brand-sub">Q&A · v1.0</div>
+
+    <div class="stats">
+      <div class="stats-row">
+        <span class="stats-label">Progress</span>
+        <span class="stats-value" id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+      <div class="stats-row" style="margin: 10px 0 0;">
+        <span class="stats-label">Studied</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--sage);" id="progress-count">0 / 0</span>
+      </div>
+    </div>
+
+    <nav>
+      <ul id="topic-nav"></ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      Tap a card to flip.<br>
+      Mark as studied to track progress.
+      <br>
+      <button onclick="resetProgress()">Reset Progress</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <div class="tag-line">— AI Engineering Roadmap</div>
+      <h1>Interview <em>Q&amp;A</em><br>— ground up.</h1>
+      <p class="lede">
+        Every step of the stack, broken into compact Q&amp;A cards. Tap to reveal, mark what you've
+        owned, come back for what you haven't.
+      </p>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search across all topics — e.g. HNSW, ReAct, LoRA, prompt injection…">
+      </div>
+    </div>
+
+    <div id="topics-container"></div>
+    <div id="no-results" class="no-results" style="display:none;">
+      No matches. Try a different keyword.
+    </div>
+  </main>
+</div>
+
+<script>
+const DATA = [
+  {
+    id: "fundamentals",
+    title: "Coding Fundamentals",
+    sub: "Python, TypeScript, Bash · data structures · Git · pytest",
+    qas: [
+      { q: "What's the difference between a list and a tuple in Python?",
+        a: "Lists are mutable and use <code>[]</code>; tuples are immutable and use <code>()</code>. Tuples are hashable (usable as dict keys), slightly faster, and signal fixed structure. Use tuples for records/coordinates and lists for growing collections." },
+      { q: "When would you choose TypeScript over plain JavaScript for an AI agent?",
+        a: "When tool schemas, API responses, and agent state get complex. TypeScript catches shape mismatches at compile time, gives IDE autocomplete for LLM SDKs, and documents contracts — typed tool definitions and structured output types are huge for reliability." },
+      { q: "What is a deque and when is it useful in LLM apps?",
+        a: "A double-ended queue (<code>collections.deque</code>) with O(1) append/pop at both ends. Useful for sliding-window context buffers, rolling rate-limit counters, recent message history in chatbots, and token-bucket implementations." },
+      { q: "Explain time complexity of dict operations in Python.",
+        a: "Get/set/delete/membership are O(1) average thanks to hashing; O(n) worst-case on pathological collisions. This is why embedding caches, tool-name dispatch, and ID → record lookups use dicts." },
+      { q: "What does <code>git rebase -i HEAD~3</code> do and when is it dangerous?",
+        a: "Opens an interactive rebase of the last 3 commits — reorder, squash, edit, or drop them. Dangerous on shared branches because it rewrites commit hashes and forces collaborators to reset. Safe on private feature branches." },
+      { q: "Difference between pytest fixtures and pytest.parametrize?",
+        a: "<code>@fixture</code> provides reusable setup (a mocked LLM client, a temp DB) injected into tests. <code>@parametrize</code> runs the same test across multiple input sets. They compose — a fixture can itself be parametrized." },
+      { q: "How do you handle async I/O for concurrent LLM calls?",
+        a: "Use <code>asyncio.gather()</code> with async clients (<code>httpx.AsyncClient</code>, <code>AsyncOpenAI</code>). Bound concurrency with <code>asyncio.Semaphore</code> to respect rate limits. Don't mix sync calls into the event loop — they'll block it." },
+      { q: "What's a bash trap and when is it useful?",
+        a: "<code>trap</code> registers a handler for signals: <code>trap cleanup EXIT</code>. Useful in deployment and training scripts to remove temp files, kill child processes, or log shutdown on SIGTERM during Kubernetes pod termination." },
+      { q: "Difference between <code>==</code> and <code>is</code> in Python?",
+        a: "<code>==</code> checks value equality (<code>__eq__</code>). <code>is</code> checks object identity (same memory address). Use <code>is</code> only for singletons: <code>x is None</code>, <code>x is True</code>. Using <code>is</code> for strings/ints works only because of interning and is fragile." },
+      { q: "Big-O of naive vs binary search — and why it matters for retrieval?",
+        a: "Linear scan is O(n); binary search is O(log n) on sorted data. For vector search, neither applies directly — exact nearest-neighbour is O(n·d), which is why we use ANN structures like HNSW with near O(log n) effective lookup." },
+      { q: "What's the Python GIL and when does it bite in LLM apps?",
+        a: "The Global Interpreter Lock allows only one thread to execute Python bytecode at a time. It doesn't hurt I/O-bound LLM API calls (async/threads release the GIL during I/O) but does hurt CPU-bound work like heavy preprocessing — use <code>multiprocessing</code> or numpy/pandas vectorised ops instead." },
+      { q: "How do you pin dependencies reliably in Python?",
+        a: "Lock files: <code>poetry.lock</code>, <code>uv.lock</code>, or <code>pip-compile</code> → <code>requirements.txt</code> with pinned versions and hashes. Separate dev vs prod deps. Pin everything in prod so CUDA/torch/transformers combinations don't silently drift." }
+    ]
+  },
+  {
+    id: "llm-apis",
+    title: "LLM APIs",
+    sub: "Prompting · structured outputs · rate limits · multimodal · cost optimisation",
+    qas: [
+      { q: "Difference between zero-shot, few-shot, and chain-of-thought prompting?",
+        a: "Zero-shot: task description only. Few-shot: include 2–5 demonstrations in the prompt. Chain-of-thought: instruct the model to reason step-by-step before answering — either explicitly (\"think step by step\") or by showing reasoning in few-shot examples." },
+      { q: "What are structured outputs and why prefer them over regex parsing?",
+        a: "Structured outputs constrain the model to emit valid JSON matching a schema — OpenAI's <code>response_format</code>, Anthropic's tool use, Pydantic AI. Eliminates fragile regex, prevents malformed JSON, reduces retry loops. Uses grammar-constrained decoding under the hood." },
+      { q: "How do you handle rate limits gracefully?",
+        a: "Exponential backoff with jitter on 429s, respect <code>retry-after</code> headers, token-bucket client-side throttling, batch what you can, and maintain separate queues per endpoint/model. Monitor TPM and RPM separately — most providers rate-limit both." },
+      { q: "What's the difference between temperature and top_p?",
+        a: "Temperature scales logits before softmax — higher = flatter distribution. Top_p (nucleus sampling) keeps the smallest set of tokens whose cumulative probability ≥ p. Tune one, not both. Temperature 0 for deterministic/factual; 0.7+ for creative work." },
+      { q: "Why use tool use / function calling instead of prompting for JSON?",
+        a: "Tool use is a native API feature — the model emits a structured tool_use block separate from text. Supports parallel calls, typed arguments, and a clear protocol for results. Hand-rolled JSON prompting mixes reasoning with outputs and is brittle." },
+      { q: "How do multi-modal models encode images?",
+        a: "Images are patchified (e.g. 14×14 pixel patches), each patch projected into a visual token embedding via a ViT-like encoder, then concatenated with text tokens. The LLM attends over a unified token sequence. Token cost per image varies by model." },
+      { q: "What's prompt caching and when does it pay off?",
+        a: "Cache the KV-state of a static prefix (system prompt, long context, tool defs) so subsequent requests skip re-prefilling. Pays off when the prefix is long, reused across many calls, and the cache TTL matches your traffic. Can drop latency and cost by 50–90%." },
+      { q: "Streaming vs non-streaming responses?",
+        a: "Streaming yields tokens via SSE as they generate, reducing perceived latency and enabling cancellation. Non-streaming returns the full response. Streaming complicates structured output parsing and error handling but is essential for chat UIs." },
+      { q: "How do you estimate cost before a large batch job?",
+        a: "Count input tokens with <code>tiktoken</code> / the provider tokenizer × input price; estimate output tokens (cap <code>max_tokens</code> conservatively) × output price; factor in cache-hit rate for cached input. Add a safety margin for retries." },
+      { q: "What's the context window and why does it matter?",
+        a: "Max tokens (input + output) the model can attend to in one request. Matters for RAG (chunk budget), long documents (chunking vs single-pass), and agent trajectories (history compression). Attention cost scales with context length." },
+      { q: "When should you use a smaller/cheaper model vs a frontier model?",
+        a: "Route by task complexity: extraction, classification, reformatting → small model (Haiku/Nano). Reasoning, planning, multi-step tool use → frontier. Build a router with confidence scoring and fall back on failure. Savings compound massively at scale." },
+      { q: "What are logprobs and how are they useful?",
+        a: "Per-token log probabilities from the model. Useful for confidence scoring, ranking candidate answers, calibrating classification outputs, and detecting low-confidence spans that should trigger retrieval or human review." }
+    ]
+  },
+  {
+    id: "augmentation",
+    title: "LLM Augmentation",
+    sub: "Tool use · fine-tuning · RAG basics · prompt & context engineering",
+    qas: [
+      { q: "When should you fine-tune vs use RAG vs prompt engineering?",
+        a: "Prompt engineering first — cheapest, fastest. RAG when the model needs fresh or proprietary facts. Fine-tune for style, format compliance, or narrow task specialisation where prompting hits a ceiling. These layer — they don't replace each other." },
+      { q: "What is LoRA and why is it popular?",
+        a: "Low-Rank Adaptation injects trainable low-rank matrices into attention layers while freezing base weights. Cuts training memory dramatically (70B models on a few GPUs), produces tiny adapter weights, and multiple LoRAs can be hot-swapped or merged." },
+      { q: "What is in-context learning and what are its limits?",
+        a: "The model adapts behaviour from examples in the prompt without any weight updates. Limits: context window size, diminishing returns past ~20 examples, sensitivity to demonstration order, and zero persistence across sessions." },
+      { q: "Prompt engineering vs context engineering — what's the difference?",
+        a: "Prompt engineering tunes instructions and format. Context engineering manages <em>what</em> goes into the window across a session — retrieval strategy, memory summarisation, tool result truncation, trajectory pruning. Context engineering dominates in agent systems." },
+      { q: "How is tool use different from plugins?",
+        a: "Tool use is a native model capability — the model emits structured calls to declared functions that you execute and feed back. Plugins are a higher-level abstraction (discovery, auth, marketplace) on top of tool use. Tool use is the primitive." },
+      { q: "How do you teach a model to call the right tool at the right time?",
+        a: "Clear tool descriptions (name, purpose, when-to-use, when-NOT-to-use), a minimal non-overlapping tool set, precise parameter descriptions, and few-shot examples in the system prompt. Evaluate with tool-selection accuracy on a labelled set." },
+      { q: "System prompt vs developer prompt vs user prompt?",
+        a: "System prompt: persistent instructions defining role/behaviour. Developer prompt (in newer APIs): the app builder's intent, trusted over user input. User prompt: the end-user request, lowest trust. Claude and newer APIs distinguish these to defend against injection." },
+      { q: "What's SFT vs RLHF vs DPO?",
+        a: "SFT (supervised fine-tuning) trains on (prompt, ideal completion) pairs. RLHF uses a reward model trained on human preferences and updates the LLM via PPO. DPO (direct preference optimisation) skips the reward model and optimises preferences directly — simpler, more stable." },
+      { q: "How do you handle prompt versioning in production?",
+        a: "Treat prompts as code: store in git, tag versions, run evals on each change, pin a version per deployment, log the prompt version with every inference. LangSmith, Langfuse, PromptLayer all support this natively." },
+      { q: "What is prompt compression and when is it useful?",
+        a: "Shortening input while preserving meaning — LLMLingua (token-level), summarisation of long history, or selecting top-k relevant spans. Useful when context is tight, latency matters, or input cost is dominant." },
+      { q: "What is meta-prompting?",
+        a: "Using an LLM to generate or improve prompts for another LLM (or itself). Examples: auto-generating CoT templates, DSPy's optimiser, Anthropic's prompt improver. Reduces manual iteration by treating prompting as search." },
+      { q: "What's the role of a system prompt in a tool-calling agent?",
+        a: "Establishes identity, constraints, available tools, decision heuristics (when to call which), stopping conditions, and output format. A good tool-agent system prompt is the difference between a reliable worker and a hallucinating one." }
+    ]
+  },
+  {
+    id: "retrieval",
+    title: "Retrieval Techniques",
+    sub: "Vector/graph DBs · hybrid search · HNSW · IVF · chunking · embeddings",
+    qas: [
+      { q: "Vector database vs graph database — what's the difference?",
+        a: "Vector DB indexes embeddings for similarity search (Pinecone, Qdrant, Weaviate). Graph DB indexes entities and relationships (Neo4j). Hybrid GraphRAG combines both — the graph captures structure, vectors handle semantic search over node content." },
+      { q: "Explain HNSW in one paragraph.",
+        a: "Hierarchical Navigable Small World builds a multi-layer graph: top layers sparse with long-range links, bottom layers dense with local links. Search starts at the top and greedily descends. Log-ish query time, excellent recall, higher memory than IVF. The default ANN algorithm in most vector DBs." },
+      { q: "What is IVF indexing and when to prefer it over HNSW?",
+        a: "Inverted File Index clusters vectors (k-means) and searches only the nearest <code>n_probe</code> centroids. Lower memory than HNSW, faster to build, better for very large corpora (>100M). HNSW wins on recall-at-low-latency for mid-size corpora." },
+      { q: "What is a reranker and why add one?",
+        a: "A cross-encoder that takes (query, document) pairs and scores them jointly — far more accurate than bi-encoder embeddings but too slow for full-corpus search. Retrieve top-100 with vectors, then rerank to top-10 with a cross-encoder (Cohere Rerank, BGE-reranker)." },
+      { q: "What is hybrid retrieval?",
+        a: "Combining lexical search (BM25, keyword) with dense vector search, merged via reciprocal rank fusion (RRF) or weighted scoring. Catches exact-match queries (product codes, names) that embeddings miss, plus semantic matches that BM25 misses." },
+      { q: "How do you choose chunk size?",
+        a: "Depends on content structure, embedding model context, and query style. Typical 256–1024 tokens. Structural chunking (by heading, paragraph, function) beats fixed-size. Always measure retrieval recall on a labelled eval set — never tune blind." },
+      { q: "What is chunk overlap and why use it?",
+        a: "Sliding chunks share N tokens with neighbours so ideas spanning a boundary aren't cut. 10–20% overlap is typical. Costs storage and can inflate duplicate hits — dedupe during rerank." },
+      { q: "What does an embedding model actually produce?",
+        a: "A fixed-dimensional dense vector (often 768 or 1024) such that semantically similar texts have small cosine distance. Produced by pooling encoder token outputs. Modern embedding models train with contrastive learning on (query, positive, negative) triples." },
+      { q: "Cosine similarity vs dot product vs euclidean distance for retrieval?",
+        a: "Cosine ignores magnitude — normalised dot product — the standard for text embeddings. Dot product equals cosine if vectors are normalised, and is what most ANN indexes actually compute. Euclidean distance is rarer for text, more common for image features." },
+      { q: "What is metadata filtering and how does it affect ANN search?",
+        a: "Post-filtering returns top-k then filters (may return fewer than k). Pre-filtering reduces the candidate set first (better recall but slower index walk). Hybrid strategies depend on filter selectivity. Qdrant and Weaviate handle this well." },
+      { q: "What is multi-vector retrieval (ColBERT-style)?",
+        a: "Instead of one vector per document, store one per token (or span). Score queries via sum-of-max-similarities. Much higher recall on fine-grained matches, but larger index and slower query. Good for high-precision retrieval." },
+      { q: "How do you handle multilingual retrieval?",
+        a: "Use a multilingual embedding model (multilingual-e5, Cohere multilingual). Optionally translate queries to a canonical language. Watch for script/tokenizer issues. Evaluate per-language retrieval quality separately — averages hide failures." }
+    ]
+  },
+  {
+    id: "rag",
+    title: "RAG",
+    sub: "Reranking · multi-step retrieval · data generation · orchestration",
+    qas: [
+      { q: "Walk me through a minimal RAG pipeline.",
+        a: "Ingest → clean/chunk → embed → store with metadata. Query path: embed query → retrieve top-k → (optional) rerank → build prompt with context → LLM generates → response with citations. Log everything for evals." },
+      { q: "What is multi-step / agentic retrieval?",
+        a: "Instead of one retrieve-then-generate, the LLM iteratively decides what to fetch next based on partial findings. Used for compositional queries (\"compare X's 2023 and 2024 earnings\") where a single retrieval can't cover every aspect." },
+      { q: "What is query rewriting and why use it?",
+        a: "Rewrite the user's query before retrieval — expand abbreviations, resolve pronouns from chat history, split compound questions, add synonyms. An LLM rewriter often boosts recall significantly on conversational queries." },
+      { q: "What is HyDE?",
+        a: "Hypothetical Document Embeddings: prompt the LLM to generate a fake answer, embed <em>that</em>, and retrieve using the hypothetical answer's embedding. The fake answer sits closer in embedding space to real answers than the original question does." },
+      { q: "How do you prevent hallucinations in RAG?",
+        a: "Ground via citations (model must cite retrieved chunks), use a strict \"answer only from context\" system prompt, add an abstain option, run groundedness evaluators post-hoc, and surface retrieved context in the UI so users can verify." },
+      { q: "Where does reranking sit in the pipeline?",
+        a: "After initial retrieval (top-50/100), before context assembly (top-5/10). A cross-encoder scores each (query, chunk) pair. Recovers precision that the bi-encoder traded for speed." },
+      { q: "How do you evaluate a RAG system?",
+        a: "Retrieval: recall@k, MRR, nDCG on a labelled (query, relevant-chunk) set. Generation: faithfulness/groundedness, answer relevance, correctness (Ragas, DeepEval, Azure AI Foundry evaluators). End-to-end: human or LLM-judge graded answers." },
+      { q: "How do you handle tabular or structured data in RAG?",
+        a: "Don't embed raw tables naively. Options: serialise to markdown, summarise each table as text plus keep raw for lookup, text-to-SQL for structured DBs, or multi-vector embedding per row. Pick based on query pattern — aggregations want SQL, lookups want embeddings." },
+      { q: "What's wrong with a naive top-k = 5 on a large corpus?",
+        a: "Relevant info is often spread across many docs; a single query rarely covers compositional questions; rerankers need more candidates to work with; chunk-level retrieval misses document-level context. Over-retrieve, rerank, then synthesise." },
+      { q: "What is contextual retrieval (Anthropic's technique)?",
+        a: "Prepend an LLM-generated context sentence to each chunk explaining its place in the parent document before embedding. Addresses retrieval failures where chunks lose their referents (pronouns, relative dates, \"this approach\"). Claimed 35–50% retrieval-failure reduction." },
+      { q: "How do you keep a RAG index fresh?",
+        a: "Event-driven ingestion on source change (webhook, CDC), scheduled re-crawls for public sources, soft-delete with tombstones for removed docs, and upserts keyed by a stable content hash. Monitor staleness SLAs per source." },
+      { q: "What is CRAG / self-corrective RAG?",
+        a: "Retrieve → grade retrieved docs → if low confidence, rewrite query or fall back to web search → regenerate. Adds a self-check step that catches bad retrievals. Related: Self-RAG, where the model critiques its own answer against sources." }
+    ]
+  },
+  {
+    id: "agents",
+    title: "AI Agents",
+    sub: "Memory · A2A · ACO · human-in-the-loop · frameworks · design patterns",
+    qas: [
+      { q: "Workflow vs agent — what's the difference?",
+        a: "A workflow is a predefined DAG of LLM/tool calls. An agent lets the LLM decide the next action dynamically based on observations. Agents are more flexible but harder to make reliable; workflows are predictable but rigid. Most production systems are hybrids." },
+      { q: "Short-term vs long-term memory?",
+        a: "Short-term: the current session's messages/scratchpad, lives in the context window. Long-term: persisted across sessions — user preferences, past conversations, episodic experiences — stored in a DB (often vector + key-value) and retrieved per turn." },
+      { q: "What is the ReAct pattern?",
+        a: "Reason + Act loop: the LLM alternates thought (internal reasoning) with action (tool call), observing results. Classical agent pattern. Still common, though modern tool-using models compress it into native tool-call blocks." },
+      { q: "What is A2A (agent-to-agent) communication?",
+        a: "Protocols and patterns for agents to delegate subtasks to other agents — Google's A2A, Anthropic's MCP (for tool/context sharing), LangGraph handoffs. Requires shared schemas, auth, and task-result contracts." },
+      { q: "What does human-in-the-loop mean in agent design?",
+        a: "Pause the agent before high-impact or ambiguous actions (send email, place order, delete data) and route to a human for approval. Implemented via interrupts (LangGraph), approval tools, or state checkpoints. Critical for safety and trust." },
+      { q: "Compare Neuro SAN, LangGraph, CrewAI, and AutoGen at a high level.",
+        a: "LangGraph: graph-based state machine, explicit edges, strong HITL. CrewAI: role-based multi-agent with task delegation. AutoGen: conversational multi-agent, strong for coding. Neuro SAN (Cognizant): HOCON-configured multi-agent with adaptive-card UI integration and native orchestration. Choose based on team skill and determinism needs." },
+      { q: "What is an agent's scratchpad?",
+        a: "Working memory where the agent accumulates intermediate reasoning, tool results, and plans during a task — in practice, the growing messages list. Pruning or summarising the scratchpad is central to keeping long tasks affordable." },
+      { q: "Common agent design patterns?",
+        a: "Planner-Executor, ReAct, Reflection (self-critique loop), single-agent tool use, Supervisor-Worker, Debate, and Pipeline/Router. Anthropic's <em>Building effective agents</em> post is the canonical reference." },
+      { q: "How do you stop an agent from looping?",
+        a: "Hard step limit, no-progress detection (same tool call twice), state-change required per iteration, cost/time budgets, and LLM-judged \"am I stuck?\" checks. Also: better task decomposition upfront beats all of the above." },
+      { q: "What is ACO (Agent Communication Orchestration)?",
+        a: "The layer that routes messages between agents, manages shared state, enforces turn-taking, handles timeouts and retries, and serialises task handoffs. Frameworks like LangGraph implement ACO as a graph runtime." },
+      { q: "Stateless vs stateful agents?",
+        a: "Stateless: each turn independent, full context passed in — simple, horizontally scalable. Stateful: server maintains session, memory, running tools — needed for long-running multi-day tasks. Stateful is harder to deploy but often required." },
+      { q: "How do you evaluate an agent?",
+        a: "Task-completion rate on a held-out benchmark, tool-call accuracy, trajectory efficiency (steps/cost per success), failure-mode analysis, and LLM-judge on final output quality. End-to-end evals beat unit evals for agent behaviour." }
+    ]
+  },
+  {
+    id: "infra",
+    title: "Infrastructure",
+    sub: "CI/CD · Kubernetes · model routing · containerisation · deployment",
+    qas: [
+      { q: "Why containerise LLM applications?",
+        a: "Reproducible dependencies (CUDA, torch versions), fast deploys, easy rollback, horizontal scaling behind a load balancer, and isolation from noisy neighbours. Models themselves often run as separate services (Triton, vLLM) that the app calls." },
+      { q: "Kubernetes Deployment vs StatefulSet for LLM workloads?",
+        a: "Deployment: stateless replicas, easy to scale — good for stateless API layers. StatefulSet: stable identity and storage per pod — needed for stateful agents, shard-local caches, or model servers with pinned volumes." },
+      { q: "How does model routing work?",
+        a: "A router receives requests, classifies by complexity/intent/cost, and forwards to the right model (Haiku/Sonnet/Opus, open/closed). Libraries: RouteLLM, OpenRouter, Martian. Routing decisions are themselves a modelling problem — evaluate them." },
+      { q: "What's the role of CI/CD in LLM apps specifically?",
+        a: "Run prompt evals and regression tests on every PR, not just unit tests. Block merges on eval regressions. Version prompts alongside code. Blue-green deploy with canary traffic comparing new vs old prompt versions." },
+      { q: "What is vLLM and why use it?",
+        a: "A high-throughput inference server with PagedAttention, continuous batching, and prefix caching. Delivers 10–20× the throughput of naive HuggingFace Transformers serving for open-weight models. Standard choice for self-hosted LLMs." },
+      { q: "Compare Azure AI Foundry, AWS Bedrock, Vertex AI at a high level.",
+        a: "All provide managed access to multiple model providers with enterprise features (private networking, VNets, content safety, evaluators). Pick based on existing cloud footprint, compliance (data residency), and which models are first-class — Claude on Bedrock and Foundry, Gemini on Vertex." },
+      { q: "What's a private endpoint and why use one for LLM APIs?",
+        a: "A VNet-scoped endpoint that routes traffic through the cloud provider's backbone without traversing the public internet. Required for regulated workloads. Needs DNS configuration for the private FQDN and VPN/ExpressRoute for on-prem clients — common source of <code>WinError 10054</code> issues." },
+      { q: "Blue-green or canary deployment for LLM apps — what changes?",
+        a: "Route a small percentage of traffic to the new prompt/model version, compare quality + latency + cost via logged evaluations, promote on success. For agents, compare task-completion rate on a held-out eval set alongside live traffic metrics." },
+      { q: "What's the cost-optimisation hierarchy for LLM infra?",
+        a: "1) Pick the right model size. 2) Prompt caching. 3) Batch where latency permits. 4) Smaller-model router with frontier fallback. 5) Prompt compression. 6) Self-host open-weights if volume justifies it. Go top-down — the first two dominate." },
+      { q: "How do you handle secrets and API keys in LLM infra?",
+        a: "Managed secret store (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault). Inject at runtime via env var or sidecar. Rotate regularly. Never log keys. Prefer scoped/ephemeral tokens for third-party tools where supported." }
+    ]
+  },
+  {
+    id: "observability",
+    title: "Observability & Evaluation",
+    sub: "LLM-as-a-judge · multi-turn evals · agent evals · tracing platforms",
+    qas: [
+      { q: "What is LLM-as-a-judge?",
+        a: "Using an LLM to grade another LLM's outputs against criteria (correctness, tone, groundedness). Scalable substitute for human labels. Calibrate against human ratings on a sample to establish agreement before trusting at scale." },
+      { q: "Common evaluation metrics for an LLM application?",
+        a: "Answer correctness, faithfulness/groundedness, relevance, coherence, safety (toxicity, bias), hallucination rate, task-completion rate (agents), tool-call accuracy, cost per successful task, p50/p95 latency." },
+      { q: "How is an agent eval different from a single-turn LLM eval?",
+        a: "Must evaluate trajectories, not just final answers: tool-selection accuracy, step efficiency, error recovery, intermediate state quality. Benchmarks like τ-bench and AgentBench focus on task completion and tool-use accuracy." },
+      { q: "What does groundedness mean in RAG evals?",
+        a: "Whether every claim in the answer is supported by retrieved context — no hallucinated facts. Typically measured by an LLM judge that checks each answer sentence against retrieved chunks. Azure AI Foundry's <code>GroundednessEvaluator</code> is a direct implementation." },
+      { q: "Why use a golden dataset and how do you build one?",
+        a: "A curated set of (input, expected output) pairs for regression testing. Build by sampling real traffic, having SMEs label, covering edge cases and known failures. Version it, freeze it, and treat expansion as its own workflow." },
+      { q: "What are multi-turn evals?",
+        a: "Evaluating a conversation across many turns — memory retention, consistency, context usage, instruction-following over long interactions. Simulate user turns with another LLM and score trajectories. Hard but essential for chatbots." },
+      { q: "Compare LangSmith, Langfuse, and Arize Phoenix.",
+        a: "All offer tracing, evals, prompt management. LangSmith: closed-source, tight LangChain integration. Langfuse: open-source, self-hostable. Phoenix: open-source from Arize, strong on embedding drift and eval visualisations. Azure AI Foundry Evals are a Microsoft-native alternative." },
+      { q: "What is tracing in an LLM app and what should a trace contain?",
+        a: "End-to-end record of a request: LLM calls (input, output, latency, tokens, cost), tool calls, retrieval hits, and parent-child span relationships. OpenTelemetry is the emerging standard (OpenLLMetry)." },
+      { q: "Responsible AI metrics — how do you measure them?",
+        a: "Hate/unfairness, violence, sexual content, self-harm, protected-material exposure, prompt-injection success rate, PII leakage, groundedness, indirect-attack robustness. Azure AI Foundry's built-in evaluators (<code>HateUnfairnessEvaluator</code>, <code>ProtectedMaterialEvaluator</code>, etc.) cover most of these." },
+      { q: "How do you detect embedding drift in production?",
+        a: "Compare distributions of recent query embeddings to a reference set via MMD or KL divergence, track retrieval recall on a periodic probe set, and alert when distributions shift. Often signals domain shift or a broken preprocessor." },
+      { q: "Offline vs online evaluation?",
+        a: "Offline: static eval set, runs in CI, tight feedback loop. Online: live traffic, A/B tests, real outcomes (clicks, thumbs-up, conversions). Both required — offline catches regressions, online validates real-world impact." },
+      { q: "What is TaskCompletionEvaluator (Azure AI Foundry) measuring?",
+        a: "Whether an agent successfully accomplished the user's request across multi-turn interactions. Judges the full trajectory — not just the last message — for goal attainment, factoring in tool usage and end state." }
+    ]
+  },
+  {
+    id: "security",
+    title: "Security",
+    sub: "Guardrails · sandboxing · ethics · prompt injection defences",
+    qas: [
+      { q: "What is prompt injection and what types exist?",
+        a: "Attacker input that overrides system instructions. Direct: user types malicious instructions. Indirect: malicious content in a retrieved document, scraped webpage, or tool output. Indirect is the harder, more realistic production risk." },
+      { q: "How do you defend against prompt injection?",
+        a: "Defence in depth: least-privilege tools, strict output parsing (never eval), content filters on retrieved text, input/output classifiers (Prompt Shields, Lakera), clear separation of data vs instructions in the prompt, and human-in-the-loop for high-risk actions." },
+      { q: "What is a guardrail and where does it sit?",
+        a: "An input/output filter that blocks or transforms unsafe content — toxicity, PII, jailbreaks, off-topic queries. Sits at the boundary: before the LLM on input, before the user on output. NeMo Guardrails, Llama Guard, Azure Content Safety." },
+      { q: "What does sandboxing mean for agent tools?",
+        a: "Running tool executions in isolated environments (containers, Firecracker VMs, WASM) with no network / limited filesystem / CPU+memory caps so a compromised tool or hostile output can't impact the host. Essential for code-execution tools." },
+      { q: "What are the OWASP Top 10 for LLMs?",
+        a: "Prompt injection, insecure output handling, training-data poisoning, model DoS, supply-chain vulnerabilities, sensitive information disclosure, insecure plugin design, excessive agency, overreliance, and model theft. OWASP LLM Top 10 is the reference." },
+      { q: "Jailbreaking vs prompt injection — what's the distinction?",
+        a: "Jailbreaking: user tricks the model into violating its safety training (personas, hypotheticals, encoded instructions). Prompt injection: untrusted input overrides developer instructions. Overlap exists, but the threat models differ." },
+      { q: "How do you prevent PII leakage?",
+        a: "PII detectors on ingestion and outputs (Presidio, provider content-safety APIs), redaction or hashing in logs, data residency controls, opt-out mechanisms for training data use. Audit retrieval indexes for PII regularly." },
+      { q: "What is excessive agency and how do you mitigate it?",
+        a: "Giving an agent more permissions than needed — e.g. full DB write access when it only needs read. Mitigate with narrowly-scoped tools, confirmation steps for destructive actions, and principle-of-least-privilege per tool call." },
+      { q: "What's an indirect prompt injection in a RAG system?",
+        a: "Attacker plants instructions in a document that gets indexed. When a user asks an innocent question, the retrieved poisoned chunk hijacks the LLM. Defences: source vetting, content classifiers, output validation, and isolating data from instructions in the prompt." },
+      { q: "Ethical considerations specific to LLM apps?",
+        a: "Bias and fairness across demographics, transparency (disclose AI use), consent for data use, environmental impact of inference, accountability for model decisions, and avoiding use cases with disproportionate harm (automated hiring rejections without human review, etc.)." },
+      { q: "What is a red-team exercise for an LLM app?",
+        a: "Structured adversarial testing — humans and automated attackers (PyRIT, garak) probe for jailbreaks, injections, PII leaks, harmful outputs, denial-of-wallet. Results feed into guardrail and prompt hardening. Should be periodic, not one-shot." },
+      { q: "What is denial of wallet?",
+        a: "Attacker forces expensive inference — large contexts, maximal outputs, tool loops — to run up your provider bill. Defences: per-user rate limits, max-tokens caps, cost budgets per session, and abuse detection." }
+    ]
+  },
+  {
+    id: "advanced",
+    title: "Advanced Steps",
+    sub: "CLI/Slack agents · vision · swarm · self-refinement · auto-prompting",
+    qas: [
+      { q: "Building a CLI agent (Claude Code-style) vs a chat agent — what changes?",
+        a: "CLI agents run in a terminal with filesystem and shell tools, focus on long-running developer tasks, need aggressive context compression, and benefit from streaming + approval gates. Chat agents optimise for conversational UX and shorter turns." },
+      { q: "What's a Slack/Teams-style agent?",
+        a: "Runs in a chat platform via bot/webhook, handles async multi-user threads, respects channel context, integrates platform features (mentions, reactions, modals). Needs persistent memory keyed by channel/thread and platform-specific auth." },
+      { q: "Vision agent vs text agent?",
+        a: "Takes images or screens as input and grounds actions in visual regions (click coordinates, bounding boxes). Used for browser automation, GUI agents (Claude's computer-use), robotics. Needs a vision-capable model and careful coordinate grounding." },
+      { q: "What's self-refinement?",
+        a: "The model critiques its own output and revises. Patterns: generate → critique → revise, or generate multiple candidates and pick the best. Improves reasoning-task quality at the cost of extra inference. See the Self-Refine paper." },
+      { q: "What is an agent swarm?",
+        a: "Many small agents with distinct roles working in parallel or via emergent coordination, instead of one monolithic agent. Used for exploration, consensus via debate, or parallel subtask execution. OpenAI Swarm and Anthropic's multi-agent research are good references." },
+      { q: "What is automated prompt engineering?",
+        a: "Programmatic prompt optimisation — DSPy compiles signatures to prompts and tunes them against metrics, APE samples and scores prompt variants, Anthropic's prompt improver refines user-written prompts. Treats prompting as hyperparameter search." },
+      { q: "What is computer use / browser-use in agents?",
+        a: "Agents that control a real browser or desktop via screenshots + mouse/keyboard actions. Powers general automation when APIs aren't available. Challenges: flaky UIs, anti-bot measures, session safety, and grounding accuracy." },
+      { q: "How do you debug a long-running agent that failed on step 47?",
+        a: "Trace everything with structured span IDs, snapshot state per step for replay, reproduce with the same seed/model version, LLM-judge over trajectories for failure clustering, and build regression tests from known failures." },
+      { q: "What is MCP (Model Context Protocol)?",
+        a: "An open protocol from Anthropic standardising how LLM apps connect to tools, data, and prompts. Servers expose capabilities; clients (Claude Desktop, IDEs) discover and call them. Solves the N×M integration problem for LLM tools." },
+      { q: "What's next beyond current agent frameworks?",
+        a: "Better long-horizon planning, reliable tool use under distribution shift, cross-agent protocols (A2A, MCP maturity), on-device agents, formal safety guarantees, and evaluation frameworks that scale to open-ended tasks. Frame this as an open research area." }
+    ]
+  }
+];
+
+// ───── State & Storage ─────
+const STORAGE_KEY = "ai_eng_prep_studied_v1";
+let studied = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+
+function saveStudied() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...studied]));
+}
+
+function cardId(topicId, i) { return `${topicId}:${i}`; }
+
+// ───── Render ─────
+const nav = document.getElementById("topic-nav");
+const container = document.getElementById("topics-container");
+
+DATA.forEach((topic, tIdx) => {
+  // Sidebar entry
+  const li = document.createElement("li");
+  li.innerHTML = `<a href="#${topic.id}" data-topic="${topic.id}">
+    <span>${String(tIdx + 1).padStart(2, "0")}. ${topic.title}</span>
+    <span class="num">${topic.qas.length}</span>
+  </a>`;
+  nav.appendChild(li);
+
+  // Topic section
+  const section = document.createElement("section");
+  section.className = "topic";
+  section.id = topic.id;
+  section.innerHTML = `
+    <div class="topic-header">
+      <span class="topic-num">[${String(tIdx + 1).padStart(2, "0")}]</span>
+      <h2 class="topic-title">${topic.title}</h2>
+      <span class="topic-progress" data-topic-progress="${topic.id}"></span>
+    </div>
+    <p class="topic-sub">${topic.sub}</p>
+    <div class="qa-list" data-topic-list="${topic.id}"></div>
+  `;
+  container.appendChild(section);
+
+  const list = section.querySelector(".qa-list");
+  topic.qas.forEach((qa, i) => {
+    const id = cardId(topic.id, i);
+    const card = document.createElement("div");
+    card.className = "qa-card" + (studied.has(id) ? " studied" : "");
+    card.dataset.id = id;
+    card.dataset.topic = topic.id;
+    card.dataset.q = qa.q.toLowerCase();
+    card.dataset.a = qa.a.replace(/<[^>]+>/g, "").toLowerCase();
+    card.innerHTML = `
+      <div class="qa-question">
+        <span class="qa-num">Q${String(i + 1).padStart(2, "0")}</span>
+        <span class="qa-text">${qa.q}</span>
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer"><div class="qa-answer-inner">${qa.a}</div></div>
+      <div class="qa-actions">
+        <button class="qa-chip ${studied.has(id) ? "active" : ""}" data-action="study">
+          ${studied.has(id) ? "✓ Studied" : "Mark as studied"}
+        </button>
+        <button class="qa-chip" data-action="copy">Copy Q&amp;A</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+});
+
+// ───── Interactions ─────
+container.addEventListener("click", (e) => {
+  const card = e.target.closest(".qa-card");
+  if (!card) return;
+
+  if (e.target.dataset.action === "study") {
+    const id = card.dataset.id;
+    if (studied.has(id)) {
+      studied.delete(id);
+      e.target.classList.remove("active");
+      e.target.textContent = "Mark as studied";
+      card.classList.remove("studied");
+    } else {
+      studied.add(id);
+      e.target.classList.add("active");
+      e.target.textContent = "✓ Studied";
+      card.classList.add("studied");
+    }
+    saveStudied();
+    updateProgress();
+    return;
+  }
+
+  if (e.target.dataset.action === "copy") {
+    const q = card.querySelector(".qa-text").textContent;
+    const a = card.querySelector(".qa-answer-inner").textContent;
+    navigator.clipboard.writeText(`Q: ${q}\nA: ${a}`);
+    e.target.textContent = "Copied ✓";
+    setTimeout(() => { e.target.textContent = "Copy Q&A"; }, 1400);
+    return;
+  }
+
+  if (e.target.closest(".qa-question")) {
+    card.classList.toggle("open");
+  }
+});
+
+// ───── Search ─────
+const searchInput = document.getElementById("search");
+const noResults = document.getElementById("no-results");
+
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+  let anyVisible = false;
+
+  document.querySelectorAll(".topic").forEach((section) => {
+    let topicVisible = false;
+    section.querySelectorAll(".qa-card").forEach((card) => {
+      const match = !q || card.dataset.q.includes(q) || card.dataset.a.includes(q);
+      card.style.display = match ? "" : "none";
+      if (match) { topicVisible = true; anyVisible = true; }
+
+      // highlight
+      const qEl = card.querySelector(".qa-text");
+      const aEl = card.querySelector(".qa-answer-inner");
+      qEl.innerHTML = highlight(qEl.textContent, q);
+      // keep the HTML answer intact — only highlight plain-text questions to avoid breaking <code> tags
+    });
+    section.style.display = topicVisible ? "" : "none";
+  });
+
+  noResults.style.display = anyVisible ? "none" : "block";
+});
+
+function highlight(text, q) {
+  if (!q) return escapeHtml(text);
+  const re = new RegExp(`(${escapeRegex(q)})`, "gi");
+  return escapeHtml(text).replace(re, "<mark>$1</mark>");
+}
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+// ───── Progress ─────
+function updateProgress() {
+  const total = DATA.reduce((s, t) => s + t.qas.length, 0);
+  const done = studied.size;
+  document.getElementById("progress-pct").textContent = total ? Math.round((done / total) * 100) + "%" : "0%";
+  document.getElementById("progress-count").textContent = `${done} / ${total}`;
+  document.getElementById("progress-fill").style.width = total ? (done / total) * 100 + "%" : "0%";
+
+  DATA.forEach((topic) => {
+    const topicDone = topic.qas.filter((_, i) => studied.has(cardId(topic.id, i))).length;
+    const el = document.querySelector(`[data-topic-progress="${topic.id}"]`);
+    if (el) el.innerHTML = `<b>${topicDone}</b> / ${topic.qas.length}`;
+  });
+}
+updateProgress();
+
+// ───── Reset ─────
+function resetProgress() {
+  if (!confirm("Reset all progress?")) return;
+  studied.clear();
+  saveStudied();
+  document.querySelectorAll(".qa-card").forEach((c) => c.classList.remove("studied"));
+  document.querySelectorAll('.qa-chip[data-action="study"]').forEach((b) => {
+    b.classList.remove("active");
+    b.textContent = "Mark as studied";
+  });
+  updateProgress();
+}
+
+// ───── Scrollspy for sidebar ─────
+const links = document.querySelectorAll("nav a");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      links.forEach((l) => l.classList.remove("active"));
+      const active = document.querySelector(`nav a[data-topic="${entry.target.id}"]`);
+      if (active) active.classList.add("active");
+    }
+  });
+}, { rootMargin: "-30% 0px -60% 0px" });
+
+document.querySelectorAll(".topic").forEach((t) => observer.observe(t));
+</script>
+
+</body>
+</html>
